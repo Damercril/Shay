@@ -54,14 +54,11 @@ class ProfessionalsListScreen extends StatelessWidget {
                 padding: EdgeInsets.all(16.r),
                 child: Row(
                   children: [
-                    if (professional.imageUrl != null)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Image.network(
-                          professional.imageUrl!,
-                          width: 80.w,
-                          height: 80.w,
-                          fit: BoxFit.cover,
+                    if (professional.profileImage.isNotEmpty)
+                      CircleAvatar(
+                        radius: 25.r,
+                        backgroundImage: NetworkImage(
+                          professional.profileImage,
                         ),
                       ),
                     SizedBox(width: 16.w),
@@ -86,7 +83,7 @@ class ProfessionalsListScreen extends StatelessWidget {
                                   vertical: 4.h,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: AppTheme.primaryColor.withOpacity(0.1),
+                                  color: AppTheme.primaryColor.withAlpha(26),
                                   borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: Row(
@@ -124,17 +121,17 @@ class ProfessionalsListScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.amber, size: 16.sp),
+                              Icon(Icons.people, color: Colors.blue, size: 16.sp),
                               SizedBox(width: 4.w),
                               Text(
-                                '${professional.rating}',
+                                '${professional.clientsCount}',
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                ' (${professional.reviewCount})',
+                                ' clients',
                                 style: TextStyle(
                                   fontSize: 12.sp,
                                   color: Colors.grey[600],
@@ -142,9 +139,9 @@ class ProfessionalsListScreen extends StatelessWidget {
                               ),
                               SizedBox(width: 12.w),
                               Text(
-                                professional.location,
+                                professional.address,
                                 style: TextStyle(
-                                  fontSize: 12.sp,
+                                  fontSize: 14.sp,
                                   color: Colors.grey[600],
                                 ),
                               ),

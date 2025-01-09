@@ -3,15 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Couleurs principales
-  static const Color primaryColor = Color(0xFF8A2BE2);  // Violet vif
-  static const Color primaryLightColor = Color(0xFFB980F0); // Violet clair
-  static const Color primaryDarkColor = Color(0xFF4A148C); // Violet foncé
-  static const Color secondaryColor = Color(0xFFB980F0); // Pour la compatibilité
-  
+  static const Color primaryColor = Color(0xFF8A6FE8); // Violet principal
+  static const Color secondaryColor = Color(0xFFE0D0FF); // Violet clair
+  static const Color accentColor = Color(0xFF6B4E9E); // Violet foncé
+
   // Couleurs d'accent
-  static const Color accentColor = Color(0xFFFF63B3); // Rose accent
-  static const Color accentLightColor = Color(0xFFFF85C6);
-  static const Color accentDarkColor = Color(0xFFB34580);
+  static const Color accentLightColor = Color(0xFF9D84E8); // Violet moyen
+  static const Color accentDarkColor = Color(0xFF7B5FE8); // Violet foncé
 
   // Couleurs de fond
   static const Color scaffoldBackgroundColor = Colors.white;
@@ -40,8 +38,10 @@ class AppTheme {
   // Dégradés
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [
-      Color(0xFF8A2BE2), // Violet vif
-      Color(0xFF9945FF), // Violet plus clair
+      Color(0xFFE0D0FF), // Violet très clair
+      Color(0xFFF1EBFF), // Violet clair chromé
+      Color(0xFFE8E1FF), // Violet clair brillant
+      Color(0xFFEEE6FF), // Violet clair métallique
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -49,8 +49,9 @@ class AppTheme {
 
   static const LinearGradient accentGradient = LinearGradient(
     colors: [
-      Color(0xFFFF63B3), // Rose accent
-      Color(0xFFFF85C6), // Rose clair
+      Color(0xFF9D84E8), // Violet moyen
+      Color(0xFF8A6FE8), // Violet
+      Color(0xFF7B5FE8), // Violet foncé
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -58,8 +59,8 @@ class AppTheme {
 
   static const LinearGradient secondaryGradient = LinearGradient(
     colors: [
-      Color(0xFF4A148C), // Violet très foncé
-      Color(0xFF8A2BE2), // Violet profond
+      Color(0xFFE0D0FF), // Violet clair
+      Color(0xFFD3C4FF), // Violet clair foncé
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -67,8 +68,8 @@ class AppTheme {
 
   static const LinearGradient storyGradient = LinearGradient(
     colors: [
-      Color(0xFF8A2BE2),
-      Color(0xFFB980F0),
+      Color(0xFFE0D0FF), // Violet clair
+      Color(0xFFD3C4FF), // Violet clair foncé
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -184,7 +185,7 @@ class AppTheme {
     dividerColor: dividerColor,
     colorScheme: ColorScheme.light(
       primary: primaryColor,
-      secondary: primaryLightColor,
+      secondary: secondaryColor,
       surface: surfaceColor,
       background: scaffoldBackgroundColor,
       error: errorColor,
