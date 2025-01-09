@@ -152,7 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         shape: BoxShape.circle,
         color: _currentPage == index
             ? AppTheme.primaryColor
-            : AppTheme.secondaryColor,
+            : AppTheme.primaryLightColor,
       ),
     );
   }

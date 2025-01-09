@@ -15,9 +15,16 @@ class AppComponents {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        padding: padding ?? const EdgeInsets.symmetric(
-          horizontal: AppTheme.spacingLarge,
-          vertical: AppTheme.spacingMedium,
+        backgroundColor: AppTheme.primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              horizontal: AppTheme.spacingLarge,
+              vertical: AppTheme.spacingMedium,
+            ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
         ),
       ),
       child: isLoading
@@ -39,9 +46,15 @@ class AppComponents {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        padding: padding ?? const EdgeInsets.symmetric(
-          horizontal: AppTheme.spacingLarge,
-          vertical: AppTheme.spacingMedium,
+        foregroundColor: AppTheme.primaryColor,
+        side: const BorderSide(color: AppTheme.primaryColor),
+        padding: padding ??
+            const EdgeInsets.symmetric(
+              horizontal: AppTheme.spacingLarge,
+              vertical: AppTheme.spacingMedium,
+            ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
         ),
       ),
       child: Text(text),
@@ -71,6 +84,25 @@ class AppComponents {
         hintText: hint,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsets.all(AppTheme.spacingMedium),
+        border: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
+          borderSide: BorderSide(color: AppTheme.dividerColor),
+        ),
+        enabledBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
+          borderSide: BorderSide(color: AppTheme.dividerColor),
+        ),
+        focusedBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
+          borderSide: BorderSide(color: AppTheme.primaryColor),
+        ),
+        errorBorder: const OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppTheme.borderRadiusLarge)),
+          borderSide: BorderSide(color: AppTheme.errorColor),
+        ),
       ),
       inputFormatters: inputFormatters,
     );
@@ -174,6 +206,38 @@ class AppComponents {
       colorFilter: color != null
           ? ColorFilter.mode(color, BlendMode.srcIn)
           : null,
+    );
+  }
+
+  static Widget buildErrorMessage(String? errorMessage) {
+    if (errorMessage == null || errorMessage.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(AppTheme.spacingMedium),
+      decoration: BoxDecoration(
+        color: AppTheme.errorColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(AppTheme.borderRadiusLarge),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Erreur',
+            style: TextStyle(
+              color: AppTheme.errorColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: AppTheme.spacingSmall),
+          Text(
+            errorMessage,
+            style: TextStyle(color: AppTheme.errorColor),
+          ),
+          const SizedBox(height: AppTheme.spacingSmall),
+        ],
+      ),
     );
   }
 }

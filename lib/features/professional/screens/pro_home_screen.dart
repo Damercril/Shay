@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/providers/auth_provider.dart';
 import '../../../core/theme/app_theme.dart';
-import 'package:go_router/go_router.dart';
+import 'pro_home_tab.dart';
+import 'pro_appointments_tab.dart';
+import 'pro_dashboard_tab.dart';
+import 'pro_services_tab.dart';
+import 'pro_profile_tab.dart';
 
 class ProHomeScreen extends StatefulWidget {
   const ProHomeScreen({super.key});
@@ -70,12 +72,12 @@ class _ProHomeScreenState extends State<ProHomeScreen> {
         bottom: false,
         child: IndexedStack(
           index: _selectedIndex,
-          children: [
-            _buildHomeTab(),
-            _buildAppointmentsTab(),
-            _buildDashboardTab(),
-            _buildServicesTab(),
-            _buildProfileTab(),
+          children: const [
+            ProHomeTab(),
+            ProAppointmentsTab(),
+            ProDashboardTab(),
+            ProServicesTab(),
+            ProProfileTab(),
           ],
         ),
       ),
@@ -90,7 +92,7 @@ class _ProHomeScreenState extends State<ProHomeScreen> {
             borderRadius: BorderRadius.circular(16.r),
           ),
           onPressed: () {
-            setState(() => _selectedIndex = 2); // Index du dashboard
+            setState(() => _selectedIndex = 2);
           },
           child: Icon(
             Icons.dashboard_rounded,
@@ -125,7 +127,7 @@ class _ProHomeScreenState extends State<ProHomeScreen> {
                 children: [
                   _buildNavItem(0, Icons.home_rounded, 'Accueil'),
                   _buildNavItem(1, Icons.calendar_today_rounded, 'Mes RDV'),
-                  SizedBox(width: 56.w), // Espace pour le bouton central
+                  SizedBox(width: 56.w),
                   _buildNavItem(3, Icons.design_services_rounded, 'Services'),
                   _buildNavItem(4, Icons.person_rounded, 'Profil'),
                 ],
@@ -166,169 +168,6 @@ class _ProHomeScreenState extends State<ProHomeScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildHomeTab() {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Bonjour,',
-                    style: TextStyle(
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.textColor,
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    'Bienvenue dans votre espace',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: AppTheme.subtitleColor,
-                    ),
-                  ),
-                ],
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: AppTheme.subtitleColor,
-                  size: 24.sp,
-                ),
-                onPressed: () {
-                  context.read<AuthProvider>().logout();
-                  context.go('/login');
-                },
-              ),
-            ],
-          ),
-          SizedBox(height: 24.h),
-          // Contenu de l'écran d'accueil à venir
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAppointmentsTab() {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Mes Rendez-vous',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.textColor,
-            ),
-          ),
-          SizedBox(height: 24.h),
-          Center(
-            child: Text(
-              'Liste des rendez-vous à venir',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppTheme.subtitleColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDashboardTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Tableau de bord',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.textColor,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            'Statistiques et analyses à venir',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: AppTheme.subtitleColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildServicesTab() {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Mes Services',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.textColor,
-            ),
-          ),
-          SizedBox(height: 24.h),
-          Center(
-            child: Text(
-              'Liste des services proposés',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppTheme.subtitleColor,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileTab() {
-    return Padding(
-      padding: EdgeInsets.all(16.w),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Mon Profil',
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: AppTheme.textColor,
-            ),
-          ),
-          SizedBox(height: 24.h),
-          Center(
-            child: Text(
-              'Contenu du profil à venir',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppTheme.subtitleColor,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
