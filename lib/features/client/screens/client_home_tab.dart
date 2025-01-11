@@ -9,6 +9,8 @@ import '../../../core/theme/app_theme.dart';
 import '../models/service_type.dart';
 import '../screens/service_providers_screen.dart';
 import '../../appointment/screens/appointment_form_screen.dart';
+import '../../chat/screens/chat_list_screen.dart';
+import '../../chat/services/chat_service.dart';
 import '../../professional/models/professional.dart';
 import '../../professional/screens/professional_profile_screen.dart';
 
@@ -26,49 +28,130 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
   final Map<String, bool> _likedPosts = {};
   final Map<String, int> _likesCount = {};
   final Map<String, int> _commentsCount = {};
+  int _unreadMessagesCount = 0;
+  late ChatService _chatService;
+  List<Map<String, String>> stories = [];
 
-  static const List<ServiceType> serviceTypes = [
+  static final List<ServiceType> services = [
     ServiceType(
       name: 'Coiffure',
       icon: FontAwesomeIcons.scissors,
-      keywords: ['coiffure', 'cheveux', 'coupe'],
       colors: [Color(0xFFFF9A9E), Color(0xFFFAD0C4)],
-      imageUrl: 'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=500&h=500&fit=crop',
-    ),
-    ServiceType(
-      name: 'Manucure',
-      icon: FontAwesomeIcons.handSparkles,
-      keywords: ['manucure', 'ongles', 'nail'],
-      colors: [Color(0xFFA18CD1), Color(0xFFFBC2EB)],
-      imageUrl: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=500&h=500&fit=crop',
-    ),
-    ServiceType(
-      name: 'Soin',
-      icon: FontAwesomeIcons.spa,
-      keywords: ['soin', 'visage', 'facial'],
-      colors: [Color(0xFF96E6A1), Color(0xFFD4FC79)],
-      imageUrl: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=500&h=500&fit=crop',
+      image: 'https://images.pexels.com/photos/3993444/pexels-photo-3993444.jpeg',
+      services: [
+        'Coupe femme',
+        'Coupe homme',
+        'Brushing',
+        'Coloration',
+        'Mèches',
+        'Balayage',
+        'Lissage',
+        'Permanente',
+        'Coiffure de mariage',
+        'Extensions',
+        'Soins capillaires',
+        'Tresses',
+      ],
     ),
     ServiceType(
       name: 'Massage',
       icon: FontAwesomeIcons.handHoldingHeart,
-      keywords: ['massage', 'détente'],
+      colors: [Color(0xFF88D3CE), Color(0xFF6E45E2)],
+      image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3',
+      services: [
+        'Massage relaxant',
+        'Massage sportif',
+        'Massage californien',
+        'Massage thaïlandais',
+        'Massage aux pierres chaudes',
+        'Massage prénatal',
+        'Réflexologie',
+        'Massage shiatsu',
+        'Massage balinais',
+        'Massage ayurvédique',
+        'Drainage lymphatique',
+        'Massage du dos',
+      ],
+    ),
+    ServiceType(
+      name: 'Esthétique',
+      icon: FontAwesomeIcons.spa,
+      colors: [Color(0xFFA18CD1), Color(0xFFFBC2EB)],
+      image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3',
+      services: [
+        'Soin du visage',
+        'Épilation',
+        'Manucure',
+        'Pédicure',
+        'Maquillage',
+        'Extension de cils',
+        'Microblading',
+        'Gommage corporel',
+        'Soin anti-âge',
+        'Pose d\'ongles',
+        'Bronzage',
+        'Lifting des cils',
+      ],
+    ),
+    ServiceType(
+      name: 'Yoga',
+      icon: FontAwesomeIcons.om,
       colors: [Color(0xFF84FAB0), Color(0xFF8FD3F4)],
-      imageUrl: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=500&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3',
+      services: [
+        'Yoga débutant',
+        'Yoga avancé',
+        'Méditation guidée',
+        'Yoga prénatal',
+        'Yoga thérapeutique',
+        'Yoga aérien',
+        'Yoga Vinyasa',
+        'Yoga Ashtanga',
+        'Yoga Kundalini',
+        'Yoga Yin',
+        'Yoga pour enfants',
+        'Retraites yoga',
+      ],
     ),
     ServiceType(
-      name: 'Maquillage',
-      icon: FontAwesomeIcons.wandMagicSparkles,
-      keywords: ['maquillage', 'makeup'],
-      colors: [Color(0xFFFF9A9E), Color(0xFFFECFEF)],
-      imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&h=500&fit=crop',
+      name: 'Sport',
+      icon: FontAwesomeIcons.dumbbell,
+      colors: [Color(0xFF5EE7DF), Color(0xFFB490CA)],
+      image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3',
+      services: [
+        'Coach personnel',
+        'Fitness',
+        'Crossfit',
+        'Musculation',
+        'Cardio training',
+        'Stretching',
+        'Zumba',
+        'Boxe',
+        'Pilates',
+        'TRX',
+        'HIIT',
+        'Circuit training',
+      ],
     ),
     ServiceType(
-      name: 'Épilation',
-      icon: FontAwesomeIcons.feather,
-      keywords: ['épilation', 'cire'],
-      colors: [Color(0xFFFBC2EB), Color(0xFFA6C1EE)],
-      imageUrl: 'https://images.unsplash.com/photo-1607779097040-26e80aa4576b?w=500&h=500&fit=crop',
+      name: 'Nutrition',
+      icon: FontAwesomeIcons.carrot,
+      colors: [Color(0xFF43E97B), Color(0xFF38F9D7)],
+      image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3',
+      services: [
+        'Bilan nutritionnel',
+        'Plan alimentaire',
+        'Coaching minceur',
+        'Nutrition sportive',
+        'Rééquilibrage alimentaire',
+        'Suivi personnalisé',
+        'Consultation diététique',
+        'Analyse composition corporelle',
+        'Nutrition végétarienne',
+        'Nutrition végane',
+        'Nutrition sans gluten',
+        'Nutrition anti-inflammatoire',
+      ],
     ),
   ];
 
@@ -93,12 +176,106 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
   @override
   void initState() {
     super.initState();
+    _initChatService();
     _scrollController.addListener(_onScroll);
+
+    // Stories data
+    stories = [
+      {
+        'image': 'https://images.pexels.com/photos/3993444/pexels-photo-3993444.jpeg',
+        'title': 'Coiffure',
+        'distance': '2.5 km',
+      },
+      {
+        'image': 'https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg',
+        'title': 'Massage',
+        'distance': '3.8 km',
+      },
+      {
+        'image': 'https://images.pexels.com/photos/3985329/pexels-photo-3985329.jpeg',
+        'title': 'Esthétique',
+        'distance': '1.2 km',
+      },
+      {
+        'image': 'https://images.pexels.com/photos/3822864/pexels-photo-3822864.jpeg',
+        'title': 'Yoga',
+        'distance': '4.1 km',
+      },
+      {
+        'image': 'https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg',
+        'title': 'Sport',
+        'distance': '0.8 km',
+      },
+    ];
+
     // Initialiser les compteurs avec des valeurs aléatoires
     for (var professional in _professionals) {
       _likesCount[professional.id] = 10 + (DateTime.now().millisecondsSinceEpoch % 90);
       _commentsCount[professional.id] = 5 + (DateTime.now().millisecondsSinceEpoch % 45);
     }
+  }
+
+  Future<void> _initChatService() async {
+    _chatService = await ChatService.init();
+    await _updateUnreadCount();
+  }
+
+  Future<void> _updateUnreadCount() async {
+    if (!mounted) return;
+    final count = await _chatService.getUnreadMessagesCount();
+    setState(() {
+      _unreadMessagesCount = count;
+    });
+  }
+
+  Future<void> _refreshData() async {
+    if (!mounted) return;
+    setState(() {
+      _isLoadingMore = true;
+    });
+    
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      setState(() {
+        _isLoadingMore = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoadingMore = false;
+      });
+    }
+  }
+
+  Future<void> _loadMoreData() async {
+    if (!mounted) return;
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      if (!mounted) return;
+      setState(() {
+        _isLoadingMore = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoadingMore = false;
+      });
+    }
+  }
+
+  void _handleError(String message) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   void _toggleLike(String professionalId) {
@@ -292,83 +469,64 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _buildServiceBubble(ServiceType service) {
+  Widget _buildServiceBubble(ServiceType serviceType) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ServiceProvidersScreen(service: service),
+            builder: (context) => ServiceProvidersScreen(service: serviceType),
           ),
         );
       },
       child: Container(
-        width: 140.w,
+        width: 160.w,
         margin: EdgeInsets.symmetric(horizontal: 8.w),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 140.w,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                image: DecorationImage(
-                  image: NetworkImage(service.imageUrl),
-                  fit: BoxFit.cover,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(red: 0, green: 0, blue: 0, alpha: 25),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  image: DecorationImage(
+                    image: NetworkImage(serviceType.image),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.3),
+                      BlendMode.darken,
+                    ),
                   ),
-                ],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    serviceType.name,
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 8.h),
             Text(
-              service.name,
+              '${serviceType.services.length} services',
               style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
+                fontSize: 14.sp,
+                color: Colors.grey[600],
               ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Row(
-              children: [
-                Icon(
-                  service.icon,
-                  size: 14.sp,
-                  color: service.colors[0],
-                ),
-                SizedBox(width: 4.w),
-                Text(
-                  '${serviceTypes.length} prestataires',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
+              textAlign: TextAlign.center,
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildServicesSection() {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 200.h,
-        margin: EdgeInsets.symmetric(vertical: 16.h),
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
-          scrollDirection: Axis.horizontal,
-          itemCount: serviceTypes.length,
-          itemBuilder: (context, index) => _buildServiceBubble(serviceTypes[index]),
         ),
       ),
     );
@@ -514,13 +672,17 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                                 Row(
                                   children: List.generate(
                                     5,
-                                    (index) => Icon(
-                                      index < (review['rating'] as double)
-                                          ? Icons.star
-                                          : Icons.star_border,
-                                      color: Colors.amber,
-                                      size: 16.sp,
-                                    ),
+                                    (index) {
+                                      final ratings = review['ratings'] as Map<String, double>;
+                                      final averageRating = ratings.values.reduce((a, b) => a + b) / ratings.length;
+                                      return Icon(
+                                        index < averageRating
+                                            ? Icons.star
+                                            : Icons.star_border,
+                                        color: Colors.amber,
+                                        size: 16.sp,
+                                      );
+                                    },
                                   ),
                                 ),
                               ],
@@ -559,52 +721,17 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
     );
   }
 
-  Future<void> _refreshData() async {
-    if (!mounted) return;
-    setState(() {
-      _isLoadingMore = true;
-    });
-    
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      if (!mounted) return;
-      setState(() {
-        _isLoadingMore = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _isLoadingMore = false;
-      });
-    }
-  }
-
-  Future<void> _loadMoreData() async {
-    if (!mounted) return;
-    setState(() {
-      _isLoadingMore = true;
-    });
-
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      if (!mounted) return;
-      setState(() {
-        _isLoadingMore = false;
-      });
-    } catch (e) {
-      if (!mounted) return;
-      setState(() {
-        _isLoadingMore = false;
-      });
-    }
-  }
-
-  void _handleError(String message) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
+  Widget _buildServicesSection() {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: 200.h,
+        margin: EdgeInsets.symmetric(vertical: 16.h),
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          scrollDirection: Axis.horizontal,
+          itemCount: services.length,
+          itemBuilder: (context, index) => _buildServiceBubble(services[index]),
+        ),
       ),
     );
   }
@@ -621,6 +748,53 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.message_outlined),
+                onPressed: _chatService == null
+                    ? null
+                    : () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChatListScreen(),
+                          ),
+                        );
+                        _updateUnreadCount();
+                      },
+              ),
+              if (_unreadMessagesCount > 0)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
+                    ),
+                    constraints: BoxConstraints(
+                      minWidth: 18.w,
+                      minHeight: 18.w,
+                    ),
+                    child: Text(
+                      _unreadMessagesCount.toString(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
@@ -727,55 +901,64 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                           Padding(
                             padding: EdgeInsets.all(16.w),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                IconButton(
-                                  icon: Icon(
-                                    _likedPosts[professional.id] ?? false
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: _likedPosts[professional.id] ?? false
-                                        ? Colors.red
-                                        : Colors.grey[600],
-                                  ),
-                                  onPressed: () => _toggleLike(professional.id),
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        _likedPosts[professional.id] ?? false
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color: _likedPosts[professional.id] ?? false
+                                            ? Colors.red
+                                            : Colors.grey[600],
+                                        size: 24.w,
+                                      ),
+                                      onPressed: () => _toggleLike(professional.id),
+                                    ),
+                                    SizedBox(width: 4.w),
+                                    Text(
+                                      '${_likesCount[professional.id] ?? 0}',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 14.sp,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 4.w),
-                                Text(
-                                  '${_likesCount[professional.id] ?? 0}',
-                                  style: TextStyle(
-                                    color: Colors.grey[600],
-                                    fontSize: 14.sp,
-                                  ),
-                                ),
-                                const Spacer(),
-                                _buildShareButton(professional),
-                                SizedBox(width: 16.w),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => AppointmentFormScreen(
-                                          professional: professional,
+                                Row(
+                                  children: [
+                                    _buildShareButton(professional),
+                                    SizedBox(width: 16.w),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => AppointmentFormScreen(
+                                              professional: professional,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppTheme.primaryColor,
+                                        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8.r),
                                         ),
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppTheme.primaryColor,
-                                    padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: Text(
+                                        'Prendre RDV',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14.sp,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                  child: Text(
-                                    'Prendre RDV',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                                  ],
                                 ),
                               ],
                             ),

@@ -22,6 +22,9 @@ class Professional {
   final String availability;
   final List<Map<String, dynamic>> reviews;
   final double rating;
+  final bool isOnline;
+
+  int get reviewCount => reviews.length;
 
   const Professional({
     required this.id,
@@ -45,6 +48,7 @@ class Professional {
     required this.availability,
     required this.reviews,
     required this.rating,
+    this.isOnline = false,
   });
 
   // Calcule la distance entre le professionnel et l'utilisateur
@@ -120,6 +124,7 @@ class Professional {
       availability: 'Lun-Sam: 9h-19h',
       reviews: [],
       rating: 0.0,
+      isOnline: Random().nextBool(),
     );
   }
 
@@ -206,6 +211,7 @@ class Professional {
           }
         ],
         rating: 4.7,
+        isOnline: Random().nextBool(),
       ),
       Professional(
         id: '2',
@@ -260,6 +266,7 @@ class Professional {
         availability: 'Lun-Sam: 10h-20h',
         reviews: [],
         rating: 0.0,
+        isOnline: Random().nextBool(),
       ),
       Professional(
         id: '3',
@@ -314,6 +321,7 @@ class Professional {
         availability: 'Mer-Dim: 11h-21h',
         reviews: [],
         rating: 0.0,
+        isOnline: Random().nextBool(),
       ),
       Professional(
         id: '4',
@@ -368,6 +376,7 @@ class Professional {
         availability: 'Mar-Sam: 10h-19h',
         reviews: [],
         rating: 0.0,
+        isOnline: Random().nextBool(),
       ),
     ];
   }
