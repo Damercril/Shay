@@ -1,27 +1,467 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/styles.dart';
 
-class ProProfileTab extends StatelessWidget {
+class ProProfileTab extends StatefulWidget {
   const ProProfileTab({super.key});
 
   @override
+  State<ProProfileTab> createState() => _ProProfileTabState();
+}
+
+class _ProProfileTabState extends State<ProProfileTab> {
+  final ImagePicker _picker = ImagePicker();
+  bool _isEditing = false;
+  String? _profileImage;
+  
+  // Images de démonstration depuis un CDN public
+  final String _defaultProfileImage = 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800';
+  final List<String> _galleryImages = [
+    'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800',
+    'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800',
+    'https://images.unsplash.com/photo-1560869713-da86bd4f31b7?w=800',
+    'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=800',
+    'https://images.unsplash.com/photo-1565647952915-9644fcd446a9?w=800',
+  ];
+  
+  // Informations de base
+  final TextEditingController _nameController = TextEditingController(text: 'Sarah Martin');
+  final TextEditingController _professionController = TextEditingController(text: 'Coiffeuse Professionnelle');
+  final TextEditingController _bioController = TextEditingController(
+    text: 'Passionnée par la coiffure depuis plus de 10 ans, je crée des styles uniques adaptés à chaque personnalité. Spécialisée dans les colorations et les coupes modernes.',
+  );
+  
+  // Localisation et contact
+  final TextEditingController _addressController = TextEditingController(text: '15 rue de la Paix, 75001 Paris');
+  final TextEditingController _phoneController = TextEditingController(text: '+33 6 12 34 56 78');
+  final TextEditingController _emailController = TextEditingController(text: 'sarah.martin@gmail.com');
+  
+  // Nouvelles informations
+  final TextEditingController _experienceController = TextEditingController(text: '10');
+  List<String> _languages = ['Français', 'Anglais', 'Espagnol'];
+  bool _mobileService = true;
+  List<String> _paymentMethods = [
+    'Carte bancaire',
+    'Espèces',
+    'PayPal',
+    'Apple Pay',
+    'Orange Money',
+    'MTN Mobile Money',
+    'Wave',
+    'Moov Money'
+  ];
+  
+  // Réseaux sociaux
+  final Map<String, String> _socialMedia = {
+    'instagram': '@sarah.beauty',
+    'tiktok': '@sarahbeauty',
+    'snapchat': '@sarah_beauty',
+    'facebook': 'Sarah Martin Beauty',
+  };
+
+  // Horaires d'ouverture
+  final Map<String, Map<String, String>> _businessHours = {
+    'Lundi': {'start': '09:00', 'end': '19:00', 'isOpen': 'true'},
+    'Mardi': {'start': '09:00', 'end': '19:00', 'isOpen': 'true'},
+    'Mercredi': {'start': '09:00', 'end': '19:00', 'isOpen': 'true'},
+    'Jeudi': {'start': '09:00', 'end': '19:00', 'isOpen': 'true'},
+    'Vendredi': {'start': '09:00', 'end': '20:00', 'isOpen': 'true'},
+    'Samedi': {'start': '10:00', 'end': '18:00', 'isOpen': 'true'},
+    'Dimanche': {'start': '00:00', 'end': '00:00', 'isOpen': 'false'},
+  };
+
+  // Diplômes et certifications
+  final List<Map<String, String>> _certifications = [
+    {
+      'title': 'CAP Coiffure',
+      'institution': 'École de Coiffure de Paris',
+      'year': '2015',
+    },
+    {
+      'title': 'BTS Esthétique',
+      'institution': 'Institut de Beauté de Paris',
+      'year': '2017',
+    },
+    {
+      'title': 'Formation Coloration Avancée',
+      'institution': 'L\'Oréal Professionnel',
+      'year': '2019',
+    },
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildProfileHeader(),
+            SizedBox(height: 60.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Column(
+                children: [
+                  _buildMainInfo(),
+                  SizedBox(height: 16.h),
+                  _buildLocationAndServices(),
+                  SizedBox(height: 16.h),
+                  _buildPaymentAndLanguages(),
+                  SizedBox(height: 16.h),
+                  _buildExperience(),
+                  SizedBox(height: 16.h),
+                  _buildGallerySection(),
+                  SizedBox(height: 16.h),
+                  _buildSocialMedia(),
+                  SizedBox(height: 16.h),
+                  _buildBusinessHours(),
+                  SizedBox(height: 16.h),
+                  _buildCertifications(),
+                  SizedBox(height: 16.h),
+                  _buildAccountSettings(),
+                  SizedBox(height: 32.h),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _isEditing = !_isEditing;
+          });
+        },
+        child: Icon(
+          _isEditing ? Icons.check : Icons.edit,
+          color: Colors.white,
+        ),
+        backgroundColor: AppTheme.primaryColor,
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader() {
+    return Stack(
+      children: [
+        Container(
+          height: 200.h,
+          decoration: BoxDecoration(
+            gradient: Styles.headerGradient,
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: -50.h,
+                right: -30.w,
+                child: Container(
+                  width: 200.w,
+                  height: 200.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: -60.h,
+                left: -40.w,
+                child: Container(
+                  width: 150.w,
+                  height: 150.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.1),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          top: 40.h,
+          left: 20.w,
+          child: Container(
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              gradient: Styles.cardGradient,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: CircleAvatar(
+              radius: 60.r,
+              backgroundColor: Colors.white,
+              child: CircleAvatar(
+                radius: 57.r,
+                backgroundImage: _profileImage != null
+                    ? FileImage(File(_profileImage!))
+                    : NetworkImage(_defaultProfileImage) as ImageProvider,
+              ),
+            ),
+          ),
+        ),
+        if (_isEditing)
+          Positioned(
+            top: 120.h,
+            left: 85.w,
+            child: Styles.iconButton(
+              icon: Icons.camera_alt,
+              onPressed: _pickProfileImage,
+              gradient: Styles.accentGradient,
+              size: 40,
+            ),
+          ),
+        Positioned(
+          top: 50.h,
+          left: 160.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _nameController.text,
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(0, 2),
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                _professionController.text,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.white.withOpacity(0.9),
+                  shadows: [
+                    Shadow(
+                      offset: Offset(0, 1),
+                      blurRadius: 2,
+                      color: Colors.black.withOpacity(0.3),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMainInfo() {
+    return Container(
+      margin: EdgeInsets.only(top: 60.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildHeader(),
-          Padding(
-            padding: EdgeInsets.all(16.w),
+          if (_isEditing) ...[
+            TextFormField(
+              controller: _nameController,
+              decoration: Styles.inputDecoration.copyWith(
+                labelText: 'Nom complet',
+                prefixIcon: Icon(Icons.person, color: AppTheme.primaryColor),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            TextFormField(
+              controller: _professionController,
+              decoration: Styles.inputDecoration.copyWith(
+                labelText: 'Profession',
+                prefixIcon: Icon(Icons.work, color: AppTheme.primaryColor),
+              ),
+            ),
+          ] else ...[
+            Text(
+              _nameController.text,
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                foreground: Paint()..shader = Styles.headerGradient.createShader(
+                  Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+                ),
+              ),
+            ),
+            Text(
+              _professionController.text,
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+          SizedBox(height: 16.h),
+          if (_isEditing)
+            TextFormField(
+              controller: _bioController,
+              maxLines: 3,
+              decoration: Styles.inputDecoration.copyWith(
+                labelText: 'Bio',
+                prefixIcon: Icon(Icons.description, color: AppTheme.primaryColor),
+              ),
+            )
+          else
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: Styles.glassmorphicDecoration.copyWith(
+                color: Colors.grey.shade50,
+              ),
+              child: Text(
+                _bioController.text,
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.grey[800],
+                  height: 1.5,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGallerySection() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Galerie',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  foreground: Paint()..shader = Styles.headerGradient.createShader(
+                    Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+                  ),
+                ),
+              ),
+              if (_isEditing)
+                Styles.iconButton(
+                  icon: Icons.add_photo_alternate,
+                  onPressed: _pickGalleryImage,
+                  gradient: Styles.accentGradient,
+                  size: 40,
+                ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          Container(
+            height: 200.h,
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8.h,
+                crossAxisSpacing: 8.w,
+                childAspectRatio: 1,
+              ),
+              itemCount: _galleryImages.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 5,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: NetworkImage(_galleryImages[index]),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationAndServices() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Localisation et Services',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
+            ),
+          ),
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: Styles.glassmorphicDecoration.copyWith(
+              color: Colors.grey.shade50,
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildProfileInfo(),
-                SizedBox(height: 24.h),
-                _buildMenuSection(),
-                SizedBox(height: 24.h),
-                _buildBusinessHours(),
-                SizedBox(height: 24.h),
-                _buildLogoutButton(context),
+                Row(
+                  children: [
+                    Icon(Icons.location_on, color: AppTheme.primaryColor),
+                    SizedBox(width: 8.w),
+                    Expanded(
+                      child: _isEditing
+                          ? TextFormField(
+                              controller: _addressController,
+                              decoration: Styles.inputDecoration.copyWith(
+                                labelText: 'Adresse',
+                              ),
+                            )
+                          : Text(_addressController.text),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  children: [
+                    Icon(Icons.directions_car, color: AppTheme.primaryColor),
+                    SizedBox(width: 8.w),
+                    Text('Service à domicile'),
+                    Spacer(),
+                    Switch(
+                      value: _mobileService,
+                      onChanged: _isEditing
+                          ? (value) {
+                              setState(() {
+                                _mobileService = value;
+                              });
+                            }
+                          : null,
+                      activeColor: AppTheme.primaryColor,
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -30,234 +470,392 @@ class ProProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.all(24.w),
-      decoration: BoxDecoration(
-        color: AppTheme.primaryColor,
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(32.r),
-        ),
-      ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            CircleAvatar(
-              radius: 50.r,
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.person_rounded,
-                size: 50.sp,
-                color: AppTheme.primaryColor,
-              ),
-            ),
-            SizedBox(height: 16.h),
-            Text(
-              'John Doe',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              'Barbier professionnel',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.white.withOpacity(0.8),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileInfo() {
+  Widget _buildPaymentAndLanguages() {
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: Styles.cardDecoration,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildInfoRow(
-            icon: Icons.phone_rounded,
-            title: 'Téléphone',
-            value: '+33 6 12 34 56 78',
+          Text(
+            'Paiement et Langues',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
+            ),
           ),
-          Divider(height: 24.h),
-          _buildInfoRow(
-            icon: Icons.email_rounded,
-            title: 'Email',
-            value: 'john.doe@example.com',
-          ),
-          Divider(height: 24.h),
-          _buildInfoRow(
-            icon: Icons.location_on_rounded,
-            title: 'Adresse',
-            value: '123 Rue du Commerce, Paris',
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: Styles.glassmorphicDecoration.copyWith(
+              color: Colors.grey.shade50,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Moyens de paiement acceptés',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.sp,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Wrap(
+                  spacing: 8.w,
+                  runSpacing: 8.h,
+                  children: _paymentMethods.map((method) {
+                    IconData getPaymentIcon(String method) {
+                      switch (method.toLowerCase()) {
+                        case 'carte bancaire':
+                          return Icons.credit_card;
+                        case 'espèces':
+                          return Icons.money;
+                        case 'paypal':
+                          return FontAwesomeIcons.paypal;
+                        case 'apple pay':
+                          return FontAwesomeIcons.apple;
+                        case 'orange money':
+                          return Icons.phone_android;
+                        case 'mtn mobile money':
+                          return Icons.phone_android;
+                        case 'wave':
+                          return Icons.waves;
+                        case 'moov money':
+                          return Icons.phone_android;
+                        default:
+                          return Icons.payment;
+                      }
+                    }
+
+                    Color getPaymentColor(String method) {
+                      switch (method.toLowerCase()) {
+                        case 'orange money':
+                          return Color(0xFFFF6600); // Orange
+                        case 'mtn mobile money':
+                          return Color(0xFFFFCC00); // MTN Yellow
+                        case 'wave':
+                          return Color(0xFF00C4CC); // Wave Blue
+                        case 'moov money':
+                          return Color(0xFF0066CC); // Moov Blue
+                        case 'paypal':
+                          return Color(0xFF003087); // PayPal Blue
+                        case 'apple pay':
+                          return Colors.black;
+                        default:
+                          return AppTheme.primaryColor.withOpacity(0.2);
+                      }
+                    }
+
+                    return Chip(
+                      avatar: Icon(
+                        getPaymentIcon(method),
+                        size: 16.sp,
+                        color: getPaymentColor(method),
+                      ),
+                      label: Text(
+                        method,
+                        style: TextStyle(
+                          color: getPaymentColor(method),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      backgroundColor: Colors.white,
+                      side: BorderSide(
+                        color: getPaymentColor(method),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  'Langues parlées',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.sp,
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Wrap(
+                  spacing: 8.w,
+                  children: _languages.map((language) {
+                    return Chip(
+                      label: Text(language),
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: AppTheme.primaryColor.withOpacity(0.2)),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoRow({
+  Widget _buildExperience() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Expérience',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
+            ),
+          ),
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: Styles.glassmorphicDecoration.copyWith(
+              color: Colors.grey.shade50,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.work_history, color: AppTheme.primaryColor),
+                SizedBox(width: 8.w),
+                Expanded(
+                  child: _isEditing
+                      ? TextFormField(
+                          controller: _experienceController,
+                          keyboardType: TextInputType.number,
+                          decoration: Styles.inputDecoration.copyWith(
+                            labelText: 'Années d\'expérience',
+                            suffixText: 'ans',
+                          ),
+                        )
+                      : Text(
+                          '${_experienceController.text} ans d\'expérience',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialMedia() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Réseaux sociaux',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
+            ),
+          ),
+          SizedBox(height: 16.h),
+          Container(
+            padding: EdgeInsets.all(12.w),
+            decoration: Styles.glassmorphicDecoration.copyWith(
+              color: Colors.grey.shade50,
+            ),
+            child: Column(
+              children: [
+                _buildSocialMediaItem(
+                  icon: FontAwesomeIcons.instagram,
+                  title: 'Instagram',
+                  value: _socialMedia['instagram']!,
+                  color: Color(0xFFE1306C),
+                ),
+                Divider(height: 16.h),
+                _buildSocialMediaItem(
+                  icon: FontAwesomeIcons.tiktok,
+                  title: 'TikTok',
+                  value: _socialMedia['tiktok']!,
+                  color: Colors.black,
+                ),
+                Divider(height: 16.h),
+                _buildSocialMediaItem(
+                  icon: FontAwesomeIcons.snapchat,
+                  title: 'Snapchat',
+                  value: _socialMedia['snapchat']!,
+                  color: Color(0xFFFFFC00),
+                ),
+                Divider(height: 16.h),
+                _buildSocialMediaItem(
+                  icon: FontAwesomeIcons.facebook,
+                  title: 'Facebook',
+                  value: _socialMedia['facebook']!,
+                  color: Color(0xFF1877F2),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialMediaItem({
     required IconData icon,
     required String title,
     required String value,
+    required Color color,
   }) {
     return Row(
       children: [
-        Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8.r),
-          ),
-          child: Icon(
-            icon,
-            color: AppTheme.primaryColor,
-            size: 20.sp,
-          ),
-        ),
+        Icon(icon, color: color, size: 24.sp),
         SizedBox(width: 12.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: AppTheme.subtitleColor,
-                ),
+        if (_isEditing)
+          Expanded(
+            child: TextFormField(
+              initialValue: value,
+              decoration: Styles.inputDecoration.copyWith(
+                labelText: title,
               ),
-              SizedBox(height: 4.h),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: AppTheme.textColor,
-                  fontWeight: FontWeight.w500,
+            ),
+          )
+        else
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.edit_rounded,
-            color: AppTheme.primaryColor,
-            size: 20.sp,
-          ),
-        ),
       ],
-    );
-  }
-
-  Widget _buildMenuSection() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          _buildMenuItem(
-            icon: Icons.settings_rounded,
-            title: 'Paramètres',
-            onTap: () {},
-          ),
-          Divider(height: 1.h),
-          _buildMenuItem(
-            icon: Icons.notifications_rounded,
-            title: 'Notifications',
-            onTap: () {},
-          ),
-          Divider(height: 1.h),
-          _buildMenuItem(
-            icon: Icons.help_outline_rounded,
-            title: 'Aide',
-            onTap: () {},
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMenuItem({
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 16.w,
-          vertical: 12.h,
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: AppTheme.primaryColor,
-              size: 24.sp,
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: AppTheme.textColor,
-                ),
-              ),
-            ),
-            Icon(
-              Icons.chevron_right_rounded,
-              color: AppTheme.subtitleColor,
-              size: 24.sp,
-            ),
-          ],
-        ),
-      ),
     );
   }
 
   Widget _buildBusinessHours() {
     return Container(
       padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Horaires d\'ouverture',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
+            ),
           ),
+          SizedBox(height: 12.h),
+          ...(_businessHours.entries.map((entry) {
+            return Container(
+              margin: EdgeInsets.only(bottom: 8.h),
+              padding: EdgeInsets.all(12.w),
+              decoration: Styles.glassmorphicDecoration.copyWith(
+                color: Colors.grey.shade50,
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 100.w,
+                    child: Text(
+                      entry.key,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  if (_isEditing) ...[
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: entry.value['start'],
+                              decoration: Styles.inputDecoration.copyWith(
+                                labelText: 'Début',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12.w,
+                                  vertical: 8.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            child: TextFormField(
+                              initialValue: entry.value['end'],
+                              decoration: Styles.inputDecoration.copyWith(
+                                labelText: 'Fin',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12.w,
+                                  vertical: 8.h,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Switch(
+                            value: entry.value['isOpen'] == 'true',
+                            onChanged: (value) {
+                              setState(() {
+                                _businessHours[entry.key]!['isOpen'] =
+                                    value.toString();
+                              });
+                            },
+                            activeColor: AppTheme.primaryColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ] else
+                    Expanded(
+                      child: Text(
+                        entry.value['isOpen'] == 'true'
+                            ? '${entry.value['start']} - ${entry.value['end']}'
+                            : 'Fermé',
+                        style: TextStyle(
+                          color: entry.value['isOpen'] == 'true'
+                              ? Colors.black
+                              : Colors.grey,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            );
+          }).toList()),
         ],
       ),
+    );
+  }
+
+  Widget _buildCertifications() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -265,55 +863,143 @@ class ProProfileTab extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Horaires d\'ouverture',
+                'Diplômes et certifications',
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.textColor,
+                  foreground: Paint()..shader = Styles.headerGradient.createShader(
+                    Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+                  ),
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.edit_rounded,
-                  color: AppTheme.primaryColor,
-                  size: 20.sp,
+              if (_isEditing)
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: Styles.accentGradient,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.add, color: Colors.white),
+                    onPressed: _addCertification,
+                  ),
                 ),
-              ),
             ],
           ),
-          SizedBox(height: 16.h),
-          _buildHourRow('Lundi', '09:00 - 19:00'),
-          _buildHourRow('Mardi', '09:00 - 19:00'),
-          _buildHourRow('Mercredi', '09:00 - 19:00'),
-          _buildHourRow('Jeudi', '09:00 - 19:00'),
-          _buildHourRow('Vendredi', '09:00 - 19:00'),
-          _buildHourRow('Samedi', '10:00 - 17:00'),
-          _buildHourRow('Dimanche', 'Fermé'),
+          SizedBox(height: 12.h),
+          ..._certifications.map((cert) {
+            return Container(
+              margin: EdgeInsets.only(bottom: 8.h),
+              padding: EdgeInsets.all(12.w),
+              decoration: Styles.glassmorphicDecoration.copyWith(
+                color: Colors.grey.shade50,
+              ),
+              child: _isEditing
+                  ? Column(
+                      children: [
+                        TextFormField(
+                          initialValue: cert['title'],
+                          decoration: Styles.inputDecoration.copyWith(
+                            labelText: 'Titre',
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        TextFormField(
+                          initialValue: cert['institution'],
+                          decoration: Styles.inputDecoration.copyWith(
+                            labelText: 'Institution',
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        TextFormField(
+                          initialValue: cert['year'],
+                          decoration: Styles.inputDecoration.copyWith(
+                            labelText: 'Année',
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cert['title']!,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                        Text(
+                          cert['institution']!,
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        Text(
+                          cert['year']!,
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+            );
+          }).toList(),
         ],
       ),
     );
   }
 
-  Widget _buildHourRow(String day, String hours) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildAccountSettings() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: Styles.cardDecoration,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            day,
+            'Paramètres du compte',
             style: TextStyle(
-              fontSize: 16.sp,
-              color: AppTheme.textColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              foreground: Paint()..shader = Styles.headerGradient.createShader(
+                Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+              ),
             ),
           ),
-          Text(
-            hours,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: AppTheme.primaryColor,
+          SizedBox(height: 12.h),
+          Container(
+            decoration: Styles.glassmorphicDecoration.copyWith(
+              color: Colors.grey.shade50,
+            ),
+            child: Column(
+              children: [
+                _buildSettingItem(
+                  icon: Icons.notifications,
+                  title: 'Notifications',
+                  onTap: () {},
+                ),
+                Divider(height: 1),
+                _buildSettingItem(
+                  icon: Icons.lock,
+                  title: 'Confidentialité',
+                  onTap: () {},
+                ),
+                Divider(height: 1),
+                _buildSettingItem(
+                  icon: Icons.help,
+                  title: 'Aide et support',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 24.h),
+          Center(
+            child: Styles.gradientButton(
+              text: 'Se déconnecter',
+              onPressed: () {},
+              gradient: Styles.warningGradient,
+              icon: Icons.logout,
             ),
           ),
         ],
@@ -321,29 +1007,71 @@ class ProProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          // Logique de déconnexion
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.red,
-          foregroundColor: Colors.white,
-          padding: EdgeInsets.symmetric(vertical: 16.h),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-        ),
-        child: Text(
-          'Se déconnecter',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-          ),
+  Widget _buildSettingItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    bool isDestructive = false,
+  }) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: isDestructive ? Colors.red : AppTheme.primaryColor,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: isDestructive ? Colors.red : null,
         ),
       ),
+      trailing: Icon(Icons.chevron_right),
+      onTap: onTap,
     );
+  }
+
+  Future<void> _pickProfileImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _profileImage = image.path;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la sélection de l\'image'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  Future<void> _pickGalleryImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          _galleryImages.add(image.path);
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la sélection de l\'image'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _addCertification() {
+    setState(() {
+      _certifications.add({
+        'title': '',
+        'institution': '',
+        'year': '',
+      });
+    });
   }
 }

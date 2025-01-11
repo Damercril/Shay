@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/theme/app_theme.dart';
+import 'pro_clients_tab.dart';
+import 'pro_revenue_tab.dart';
+import 'pro_appointments_tab.dart';
+import 'pro_reviews_tab.dart';
 
 class ProDashboardTab extends StatelessWidget {
   const ProDashboardTab({Key? key}) : super(key: key);
@@ -75,23 +79,43 @@ class ProDashboardTab extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _buildStatCard(
-                title: 'Clients',
-                value: '127',
-                icon: Icons.people,
-                gradient: AppTheme.primaryGradient,
+              child: Builder(
+                builder: (context) => GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProClientsTab(),
+                      ),
+                    );
+                  },
+                  child: _buildStatCard(
+                    title: 'Clients',
+                    value: '127',
+                    icon: Icons.people,
+                    gradient: AppTheme.primaryGradient,
+                  ),
+                ),
               ),
             ),
             SizedBox(width: 16.w),
             Expanded(
-              child: _buildStatCard(
-                title: 'Rendez-vous',
-                value: '48',
-                icon: Icons.calendar_today,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              child: Builder(
+                builder: (context) => _buildStatCard(
+                  title: 'Rendez-vous',
+                  value: '48',
+                  icon: Icons.calendar_today,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProAppointmentsTab(),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -101,27 +125,43 @@ class ProDashboardTab extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: _buildStatCard(
-                title: 'Revenus',
-                value: '3,250€',
-                icon: Icons.euro,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              child: Builder(
+                builder: (context) => _buildStatCard(
+                  title: 'Revenus',
+                  value: '3,250€',
+                  icon: Icons.euro,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF2196F3), Color(0xFF64B5F6)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProRevenueTab(),
+                    ),
+                  ),
                 ),
               ),
             ),
             SizedBox(width: 16.w),
             Expanded(
-              child: _buildStatCard(
-                title: 'Avis',
-                value: '4.8',
-                icon: Icons.star,
-                gradient: const LinearGradient(
-                  colors: [Color(0xFFFFA726), Color(0xFFFFB74D)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+              child: Builder(
+                builder: (context) => _buildStatCard(
+                  title: 'Avis',
+                  value: '4.8',
+                  icon: Icons.star,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFFA726), Color(0xFFFFB74D)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ProReviewsTab(),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -136,8 +176,9 @@ class ProDashboardTab extends StatelessWidget {
     required String value,
     required IconData icon,
     required Gradient gradient,
+    VoidCallback? onTap,
   }) {
-    return Container(
+    Widget card = Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         gradient: gradient,
@@ -168,6 +209,15 @@ class ProDashboardTab extends StatelessWidget {
         ],
       ),
     );
+
+    if (onTap != null) {
+      return GestureDetector(
+        onTap: onTap,
+        child: card,
+      );
+    }
+
+    return card;
   }
 
   Widget _buildAppointmentsSection() {
