@@ -251,28 +251,21 @@ class _LoginScreenState extends State<LoginScreen>
       );
 
       if (!mounted) return;
-
-      // Redirection en fonction du type d'utilisateur
-      if (authProvider.userType == UserType.client) {
-        context.go('/client');
-      } else {
+      
+      if (authProvider.userType == UserType.professional) {
         context.go('/professional');
+      } else {
+        context.go('/client');
       }
     } catch (e) {
       if (!mounted) return;
       
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erreur de connexion: ${e.toString()}'),
-          backgroundColor: AppTheme.errorColor,
+          content: Text('Erreur de connexion. Veuillez réessayer.'),
+          backgroundColor: Colors.red,
         ),
       );
-
-      // Réinitialiser le PIN en cas d'erreur
-      for (var controller in _pinControllers) {
-        controller.clear();
-      }
-      _pinFocusNodes[0].requestFocus();
     } finally {
       if (mounted) {
         setState(() {

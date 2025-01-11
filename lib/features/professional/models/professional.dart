@@ -1,4 +1,4 @@
-import 'dart:math' show cos, sqrt, asin, pi;
+import 'dart:math';
 
 class Professional {
   final String id;
@@ -20,6 +20,8 @@ class Professional {
   final List<String> languages;
   final List<String> paymentMethods;
   final String availability;
+  final List<Map<String, dynamic>> reviews;
+  final double rating;
 
   const Professional({
     required this.id,
@@ -41,17 +43,27 @@ class Professional {
     required this.languages,
     required this.paymentMethods,
     required this.availability,
+    required this.reviews,
+    required this.rating,
   });
 
+  // Calcule la distance entre le professionnel et l'utilisateur
   double getDistanceFrom(double userLat, double userLng) {
-    const p = pi / 180; // Math.PI / 180
-    final a = 0.5 -
-        cos((userLat - latitude) * p) / 2 +
-        cos(latitude * p) *
-            cos(userLat * p) *
-            (1 - cos((userLng - longitude) * p)) /
-            2;
-    return 12742 * asin(sqrt(a)); // 2 * R; R = 6371 km
+    const double earthRadius = 6371; // Rayon de la Terre en kilomètres
+    final double latDiff = _toRadians(userLat - latitude);
+    final double lngDiff = _toRadians(userLng - longitude);
+
+    final double a = sin(latDiff / 2) * sin(latDiff / 2) +
+        cos(_toRadians(latitude)) *
+            cos(_toRadians(userLat)) *
+            sin(lngDiff / 2) *
+            sin(lngDiff / 2);
+    final double c = 2 * asin(sqrt(a));
+    return earthRadius * c;
+  }
+
+  double _toRadians(double degree) {
+    return degree * pi / 180;
   }
 
   static Professional getDummyProfessional() {
@@ -60,185 +72,303 @@ class Professional {
       name: 'Sarah Martin',
       title: 'Coiffeuse & Maquilleuse professionnelle',
       description: 'Passionnée par la beauté et le bien-être depuis plus de 10 ans. Je me spécialise dans les coiffures de mariage et le maquillage professionnel.',
-      profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330',
+      profileImage: 'https://i.pravatar.cc/300?img=5',
       portfolioImages: [
-        'https://images.unsplash.com/photo-1562322140-8baeececf3df',
-        'https://images.unsplash.com/photo-1596178060671-7a80dc8059ea',
-        'https://images.unsplash.com/photo-1559599101-f09722fb4948',
-        'https://images.unsplash.com/photo-1565538420870-da08ff96a207',
-        'https://images.unsplash.com/photo-1579187707643-35646d22b596',
+        'https://images.pexels.com/photos/3993444/pexels-photo-3993444.jpeg',  
+        'https://images.pexels.com/photos/2681751/pexels-photo-2681751.jpeg',  
+        'https://images.pexels.com/photos/936554/pexels-photo-936554.jpeg',    
+        'https://images.pexels.com/photos/3993321/pexels-photo-3993321.jpeg',  
+        'https://images.pexels.com/photos/2896428/pexels-photo-2896428.jpeg',  
+        'https://images.pexels.com/photos/2100341/pexels-photo-2100341.jpeg',  
+        'https://images.pexels.com/photos/2735727/pexels-photo-2735727.jpeg',  
+        'https://images.pexels.com/photos/2923157/pexels-photo-2923157.jpeg'   
       ],
       services: [
         'Coiffure mariage',
-        'Maquillage événementiel',
-        'Coloration',
+        'Maquillage',
         'Coupe femme',
+        'Coloration',
         'Brushing',
-        'Extensions de cils',
+        'Chignon'
       ],
       servicesPrices: {
         'Coiffure mariage': 150.0,
-        'Maquillage événementiel': 80.0,
-        'Coloration': 65.0,
+        'Maquillage': 80.0,
         'Coupe femme': 45.0,
+        'Coloration': 120.0,
         'Brushing': 35.0,
-        'Extensions de cils': 90.0,
+        'Chignon': 65.0
       },
-      address: '15 Rue de la République, 75001 Paris',
-      latitude: 48.8566,
-      longitude: 2.3522,
+      address: 'Bastille, Paris 11e',
+      latitude: 48.8531,
+      longitude: 2.3698,
       socialMedia: {
-        'instagram': '@sarah.beauty.paris',
-        'facebook': 'SarahBeautyParis',
-        'tiktok': '@sarahbeautypro',
+        'instagram': '@sarah.beauty',
+        'tiktok': '@sarahbeauty',
+        'facebook': 'SarahBeautyParis'
       },
       clientsCount: 1500,
       specialties: [
-        'Coiffures de mariée',
+        'Coiffure de mariée',
         'Maquillage naturel',
-        'Colorations végétales',
-        'Soins des cheveux',
+        'Colorations'
       ],
       experience: '10 ans d\'expérience',
       education: 'Diplômée de l\'École de Coiffure de Paris\nCertification en Maquillage Professionnel',
-      languages: ['Français', 'Anglais', 'Espagnol'],
+      languages: ['Français', 'Anglais'],
       paymentMethods: ['Carte bancaire', 'Espèces', 'PayPal'],
       availability: 'Lun-Sam: 9h-19h',
+      reviews: [],
+      rating: 0.0,
     );
   }
+
+  static List<Professional> getDummyProfessionals() {
+    return [
+      Professional(
+        id: '1',
+        name: 'Aminata Diallo',
+        title: 'Coiffeuse spécialisée en tresses africaines',
+        description: 'Experte en coiffure africaine avec plus de 15 ans d\'expérience. Spécialisée dans les tresses, nattes, locks et tissages.',
+        profileImage: 'https://i.pravatar.cc/300?img=28',
+        portfolioImages: [
+          'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg',
+          'https://images.pexels.com/photos/3065170/pexels-photo-3065170.jpeg',
+          'https://images.pexels.com/photos/936554/pexels-photo-936554.jpeg',
+          'https://images.pexels.com/photos/2896428/pexels-photo-2896428.jpeg',
+          'https://images.pexels.com/photos/2100341/pexels-photo-2100341.jpeg',
+          'https://images.pexels.com/photos/2735727/pexels-photo-2735727.jpeg'
+        ],
+        services: [
+          'Tresses',
+          'Nattes',
+          'Tissage',
+          'Locks',
+          'Vanilles',
+          'Soins capillaires'
+        ],
+        servicesPrices: {
+          'Tresses': 80.0,
+          'Nattes': 70.0,
+          'Tissage': 150.0,
+          'Locks': 100.0,
+          'Vanilles': 90.0,
+          'Soins capillaires': 45.0
+        },
+        address: 'Château Rouge, Paris 18e',
+        latitude: 48.8853,
+        longitude: 2.3493,
+        socialMedia: {
+          'instagram': '@aminata.hair',
+          'facebook': 'Aminata Hair Paris',
+          'tiktok': '@aminata.hair'
+        },
+        clientsCount: 850,
+        specialties: [
+          'Tresses africaines',
+          'Nattes collées',
+          'Tissage naturel',
+          'Soins des locks'
+        ],
+        experience: '15 ans d\'expérience en coiffure africaine',
+        education: 'Diplômée de l\'École de Coiffure de Dakar\nFormation continue en techniques modernes',
+        languages: ['Français', 'Wolof', 'Anglais'],
+        paymentMethods: ['Carte bancaire', 'Espèces', 'PayPal'],
+        availability: 'Mar-Dim: 10h-20h',
+        reviews: [
+          {
+            'userName': 'Sophie M.',
+            'date': '2024-12-28',
+            'ratings': {
+              'service': 5.0,
+              'punctuality': 4.5,
+              'price': 4.0,
+              'cleanliness': 5.0
+            },
+            'comment': 'Aminata est une vraie professionnelle ! Mes tresses sont parfaites et elle a été très attentive à mes souhaits. Je recommande vivement !',
+            'photos': [
+              'https://images.pexels.com/photos/3065209/pexels-photo-3065209.jpeg'
+            ]
+          },
+          {
+            'userName': 'Marie L.',
+            'date': '2024-12-15',
+            'ratings': {
+              'service': 5.0,
+              'punctuality': 5.0,
+              'price': 4.5,
+              'cleanliness': 5.0
+            },
+            'comment': 'Super expérience ! Aminata est très douce et professionnelle. Le résultat est magnifique et tient très bien.',
+            'photos': [
+              'https://images.pexels.com/photos/3065170/pexels-photo-3065170.jpeg'
+            ]
+          }
+        ],
+        rating: 4.7,
+      ),
+      Professional(
+        id: '2',
+        name: 'Yasmine Benali',
+        title: 'Maquilleuse Professionnelle & Beauty Artist',
+        description: 'Passionnée par l\'art du maquillage et le soin de la peau. Spécialisée dans le maquillage de mariée oriental et les soins traditionnels. Je crée des looks personnalisés qui mettent en valeur votre beauté naturelle tout en respectant vos traditions.',
+        profileImage: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg',
+        portfolioImages: [
+          'https://images.pexels.com/photos/2442906/pexels-photo-2442906.jpeg',  
+          'https://images.pexels.com/photos/2113855/pexels-photo-2113855.jpeg',  
+          'https://images.pexels.com/photos/2738920/pexels-photo-2738920.jpeg',  
+          'https://images.pexels.com/photos/2746197/pexels-photo-2746197.jpeg',  
+          'https://images.pexels.com/photos/3785147/pexels-photo-3785147.jpeg',  
+          'https://images.pexels.com/photos/3785170/pexels-photo-3785170.jpeg',  
+          'https://images.pexels.com/photos/4620843/pexels-photo-4620843.jpeg',  
+          'https://images.pexels.com/photos/4620769/pexels-photo-4620769.jpeg'   
+        ],
+        services: [
+          'Maquillage mariée',
+          'Maquillage soirée',
+          'Cours d\'auto-maquillage',
+          'Soins du visage',
+          'Épilation au fil',
+          'Henné'
+        ],
+        servicesPrices: {
+          'Maquillage mariée': 200.0,
+          'Maquillage soirée': 80.0,
+          'Cours d\'auto-maquillage': 120.0,
+          'Soins du visage': 60.0,
+          'Épilation au fil': 30.0,
+          'Henné': 50.0
+        },
+        address: 'Belleville, Paris 20e',
+        latitude: 48.8717,
+        longitude: 2.3798,
+        socialMedia: {
+          'instagram': '@yasmine.beauty',
+          'tiktok': '@yasminebeautyart',
+          'youtube': '@YasmineBeauty'
+        },
+        clientsCount: 800,
+        specialties: [
+          'Maquillage oriental',
+          'Soins traditionnels',
+          'Art du henné'
+        ],
+        experience: '8 ans d\'expérience',
+        education: 'Formation en Maquillage Professionnel\nSpécialisation en Soins Orientaux',
+        languages: ['Français', 'Arabe', 'Anglais'],
+        paymentMethods: ['Carte bancaire', 'Espèces'],
+        availability: 'Lun-Sam: 10h-20h',
+        reviews: [],
+        rating: 0.0,
+      ),
+      Professional(
+        id: '3',
+        name: 'Chen Wei',
+        title: 'Masseuse & Thérapeute Holistique',
+        description: 'Experte en médecine traditionnelle chinoise et techniques de massage. Je propose une approche holistique du bien-être, combinant massages thérapeutiques, acupression et conseils en nutrition selon les principes de la MTC.',
+        profileImage: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg',
+        portfolioImages: [
+          'https://images.pexels.com/photos/3997993/pexels-photo-3997993.jpeg',  
+          'https://images.pexels.com/photos/3997385/pexels-photo-3997385.jpeg',  
+          'https://images.pexels.com/photos/3188/love-romantic-bath-candlelight.jpg',  
+          'https://images.pexels.com/photos/3865557/pexels-photo-3865557.jpeg',  
+          'https://images.pexels.com/photos/3865676/pexels-photo-3865676.jpeg',  
+          'https://images.pexels.com/photos/3865720/pexels-photo-3865720.jpeg',  
+          'https://images.pexels.com/photos/3865742/pexels-photo-3865742.jpeg',  
+          'https://images.pexels.com/photos/3865785/pexels-photo-3865785.jpeg'   
+        ],
+        services: [
+          'Massage traditionnel chinois',
+          'Acupression',
+          'Massage aux pierres chaudes',
+          'Réflexologie',
+          'Consultation MTC',
+          'Massage relaxant'
+        ],
+        servicesPrices: {
+          'Massage traditionnel chinois': 90.0,
+          'Acupression': 70.0,
+          'Massage aux pierres chaudes': 100.0,
+          'Réflexologie': 60.0,
+          'Consultation MTC': 50.0,
+          'Massage relaxant': 80.0
+        },
+        address: 'Arts et Métiers, Paris 3e',
+        latitude: 48.8645,
+        longitude: 2.3635,
+        socialMedia: {
+          'instagram': '@chen.wellness',
+          'wechat': 'ChenWellness',
+          'facebook': 'ChenHolisticTherapy'
+        },
+        clientsCount: 600,
+        specialties: [
+          'Médecine traditionnelle chinoise',
+          'Massages thérapeutiques',
+          'Acupression'
+        ],
+        experience: '15 ans d\'expérience',
+        education: 'Diplômée de l\'Université de MTC de Shanghai\nCertification en Massages Thérapeutiques',
+        languages: ['Français', 'Chinois', 'Anglais'],
+        paymentMethods: ['Carte bancaire', 'Espèces', 'WeChat Pay'],
+        availability: 'Mer-Dim: 11h-21h',
+        reviews: [],
+        rating: 0.0,
+      ),
+      Professional(
+        id: '4',
+        name: 'Sofia Rodriguez',
+        title: 'Nail Artist & Manucure',
+        description: 'Créatrice de nail art et spécialiste en soins des ongles. Je transforme vos ongles en véritables œuvres d\'art tout en garantissant leur santé. Expertise en techniques innovantes et designs personnalisés.',
+        profileImage: 'https://images.pexels.com/photos/1587009/pexels-photo-1587009.jpeg',
+        portfolioImages: [
+          'https://images.pexels.com/photos/939836/pexels-photo-939836.jpeg',  
+          'https://images.pexels.com/photos/3997386/pexels-photo-3997386.jpeg',  
+          'https://images.pexels.com/photos/3997373/pexels-photo-3997373.jpeg',  
+          'https://images.pexels.com/photos/4046316/pexels-photo-4046316.jpeg',  
+          'https://images.pexels.com/photos/4046317/pexels-photo-4046317.jpeg',  
+          'https://images.pexels.com/photos/4046320/pexels-photo-4046320.jpeg',  
+          'https://images.pexels.com/photos/4210784/pexels-photo-4210784.jpeg',  
+          'https://images.pexels.com/photos/4210799/pexels-photo-4210799.jpeg'   
+        ],
+        services: [
+          'Pose complète gel',
+          'Remplissage gel',
+          'Nail art',
+          'Manucure simple',
+          'Pédicure',
+          'Dépose'
+        ],
+        servicesPrices: {
+          'Pose complète gel': 70.0,
+          'Remplissage gel': 45.0,
+          'Nail art': 20.0,
+          'Manucure simple': 30.0,
+          'Pédicure': 40.0,
+          'Dépose': 20.0
+        },
+        address: 'Oberkampf, Paris 11e',
+        latitude: 48.8649,
+        longitude: 2.3785,
+        socialMedia: {
+          'instagram': '@sofia.nails',
+          'tiktok': '@sofianailart',
+          'pinterest': '@sofianaildesign'
+        },
+        clientsCount: 950,
+        specialties: [
+          'Nail art créatif',
+          'Pose gel',
+          'Soins des ongles'
+        ],
+        experience: '6 ans d\'expérience',
+        education: 'Formation en Prothésie Ongulaire\nCertification en Nail Art Avancé',
+        languages: ['Français', 'Espagnol'],
+        paymentMethods: ['Carte bancaire', 'Espèces'],
+        availability: 'Mar-Sam: 10h-19h',
+        reviews: [],
+        rating: 0.0,
+      ),
+    ];
+  }
 }
-
-// Liste de démonstration de prestataires
-final List<Professional> demoProfessionals = [
-  Professional(
-    id: '1',
-    name: 'Emma Dupont',
-    title: 'Coiffeuse',
-    description: 'Spécialiste en colorations et coupes modernes avec 8 ans d\'expérience',
-    profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop',
-    portfolioImages: [],
-    services: ['Coiffure'],
-    servicesPrices: {
-      'Coiffure': 50.0,
-    },
-    address: 'Paris 11e',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    socialMedia: {
-      'instagram': '@emma.dupont',
-    },
-    clientsCount: 500,
-    specialties: ['Coiffures modernes'],
-    experience: '8 ans d\'expérience',
-    education: 'Diplômée de l\'École de Coiffure de Paris',
-    languages: ['Français'],
-    paymentMethods: ['Carte bancaire', 'Espèces'],
-    availability: 'Lun-Sam: 9h-19h',
-  ),
-  Professional(
-    id: '2',
-    name: 'Sophie Martin',
-    title: 'Coiffeuse & Maquilleuse',
-    description: 'Coiffeuse et maquilleuse professionnelle pour mariages et événements',
-    profileImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop',
-    portfolioImages: [],
-    services: ['Coiffure', 'Maquillage'],
-    servicesPrices: {
-      'Coiffure': 60.0,
-      'Maquillage': 80.0,
-    },
-    address: 'Paris 16e',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    socialMedia: {
-      'instagram': '@sophie.martin',
-    },
-    clientsCount: 800,
-    specialties: ['Coiffures de mariée', 'Maquillage naturel'],
-    experience: '10 ans d\'expérience',
-    education: 'Diplômée de l\'École de Coiffure de Paris\nCertification en Maquillage Professionnel',
-    languages: ['Français', 'Anglais'],
-    paymentMethods: ['Carte bancaire', 'Espèces', 'PayPal'],
-    availability: 'Lun-Sam: 9h-19h',
-  ),
-  Professional(
-    id: '3',
-    name: 'Laura Chen',
-    title: 'Manucure & Soin',
-    description: 'Expert en soins des ongles et soins du visage',
-    profileImage: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop',
-    portfolioImages: [],
-    services: ['Manucure', 'Soin'],
-    servicesPrices: {
-      'Manucure': 30.0,
-      'Soin': 40.0,
-    },
-    address: 'Paris 8e',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    socialMedia: {
-      'instagram': '@laura.chen',
-    },
-    clientsCount: 600,
-    specialties: ['Soins des ongles', 'Soins du visage'],
-    experience: '6 ans d\'expérience',
-    education: 'Diplômée de l\'École de Beauté de Paris',
-    languages: ['Français', 'Chinois'],
-    paymentMethods: ['Carte bancaire', 'Espèces'],
-    availability: 'Lun-Sam: 9h-19h',
-  ),
-  Professional(
-    id: '4',
-    name: 'Marie Dubois',
-    title: 'Masseuse',
-    description: 'Masseuse certifiée, spécialisée en massages relaxants et thérapeutiques',
-    profileImage: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop',
-    portfolioImages: [],
-    services: ['Massage'],
-    servicesPrices: {
-      'Massage': 50.0,
-    },
-    address: 'Paris 15e',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    socialMedia: {
-      'instagram': '@marie.dubois',
-    },
-    clientsCount: 700,
-    specialties: ['Massages relaxants', 'Massages thérapeutiques'],
-    experience: '8 ans d\'expérience',
-    education: 'Diplômée de l\'École de Massage de Paris',
-    languages: ['Français'],
-    paymentMethods: ['Carte bancaire', 'Espèces'],
-    availability: 'Lun-Sam: 9h-19h',
-  ),
-  Professional(
-    id: '5',
-    name: 'Alice Rousseau',
-    title: 'Maquilleuse',
-    description: 'Maquilleuse professionnelle pour tous types d\'événements',
-    profileImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200&h=200&fit=crop',
-    portfolioImages: [],
-    services: ['Maquillage'],
-    servicesPrices: {
-      'Maquillage': 70.0,
-    },
-    address: 'Paris 9e',
-    latitude: 48.8566,
-    longitude: 2.3522,
-    socialMedia: {
-      'instagram': '@alice.rousseau',
-    },
-    clientsCount: 900,
-    specialties: ['Maquillage naturel', 'Maquillage événementiel'],
-    experience: '10 ans d\'expérience',
-    education: 'Diplômée de l\'École de Maquillage de Paris',
-    languages: ['Français', 'Anglais'],
-    paymentMethods: ['Carte bancaire', 'Espèces', 'PayPal'],
-    availability: 'Lun-Sam: 9h-19h',
-  ),
-];
-
-// Coordonnées de Paris pour la démonstration
-const parisLat = 48.8566;
-const parisLng = 2.3522;

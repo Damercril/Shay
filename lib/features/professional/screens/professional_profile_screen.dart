@@ -416,65 +416,33 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> w
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          widget.professional.name,
+          style: TextStyle(
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () {
+              Share.share(
+                'Découvrez ${widget.professional.name} sur Shayniss!\n'
+                '${widget.professional.title}\n'
+                'Téléchargez l\'application pour prendre rendez-vous.',
+              );
+            },
+          ),
+        ],
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 300.h,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                children: [
-                  PageView.builder(
-                    controller: _pageController,
-                    itemCount: widget.professional.portfolioImages.length,
-                    onPageChanged: (index) {
-                      setState(() {
-                        _currentImageIndex = index;
-                      });
-                    },
-                    itemBuilder: (context, index) {
-                      return Image.network(
-                        widget.professional.portfolioImages[index],
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                  Positioned(
-                    bottom: 16.h,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        widget.professional.portfolioImages.length,
-                        (index) => Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4.w),
-                          width: 8.w,
-                          height: 8.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: _currentImageIndex == index
-                                ? Colors.white
-                                : Colors.white.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-              onPressed: () => Navigator.pop(context),
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.share, color: Colors.white),
-                onPressed: () => _showShareOptions(context),
-              ),
-            ],
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(16.r),
@@ -599,6 +567,78 @@ class _ProfessionalProfileScreenState extends State<ProfessionalProfileScreen> w
                     icon: Icons.location_on_outlined,
                     title: 'Adresse',
                     value: widget.professional.address,
+                  ),
+                  _buildSectionTitle('Galerie'),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8.w,
+                      mainAxisSpacing: 8.h,
+                    ),
+                    itemCount: widget.professional.portfolioImages.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Scaffold(
+                                backgroundColor: Colors.black,
+                                body: Stack(
+                                  children: [
+                                    Center(
+                                      child: InteractiveViewer(
+                                        minScale: 0.5,
+                                        maxScale: 4.0,
+                                        child: Hero(
+                                          tag: 'gallery_${widget.professional.id}_$index',
+                                          child: Image.network(
+                                            widget.professional.portfolioImages[index],
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      top: 40.h,
+                                      right: 16.w,
+                                      child: IconButton(
+                                        icon: Icon(Icons.close, color: Colors.white),
+                                        onPressed: () => Navigator.pop(context),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: 'gallery_${widget.professional.id}_$index',
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Image.network(
+                                widget.professional.portfolioImages[index],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   _buildSectionTitle('Réseaux sociaux'),
                   Row(

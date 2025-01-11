@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shayniss/core/enums/user_type.dart';
 import 'package:shayniss/features/auth/screens/login_screen.dart';
 import 'package:shayniss/features/auth/screens/register_screen.dart';
-import 'package:shayniss/features/client/screens/client_home_screen.dart';
+import 'package:shayniss/features/client/screens/client_main_screen.dart';
 import 'package:shayniss/features/onboarding/screens/onboarding_screen.dart';
 import 'package:shayniss/features/professional/screens/pro_home_screen.dart';
 import 'package:shayniss/core/providers/auth_provider.dart';
@@ -34,9 +34,9 @@ class AppRouter {
           if (!authProvider.isAuthenticated) {
             return const LoginScreen();
           }
-          return authProvider.userType == UserType.client
-              ? const ClientHomeScreen()
-              : const ProHomeScreen();
+          return authProvider.userType == UserType.professional
+              ? const ProHomeScreen()
+              : const ClientMainScreen();
         },
       ),
       GoRoute(
@@ -49,7 +49,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/client',
-        builder: (context, state) => const ClientHomeScreen(),
+        builder: (context, state) => const ClientMainScreen(),
       ),
       GoRoute(
         path: '/professional',

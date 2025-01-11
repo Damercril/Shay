@@ -377,7 +377,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       await context.read<AuthProvider>().register(
             _phoneController.text,
             _pin,
-            _selectedUserType,
+            userType: _selectedUserType,
           );
 
       if (!mounted) return;

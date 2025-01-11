@@ -147,6 +147,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 9h - 19h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 5.0,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 5.0
+          },
+          'comment': 'Très satisfaite de ma coupe et de ma coloration ! Sarah est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.6,
     ),
     Professional(
       id: '2',
@@ -177,6 +192,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais', 'Espagnol'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Lundi - Dimanche, sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-25',
+          'ratings': {
+            'service': 5.0,
+            'punctuality': 5.0,
+            'price': 4.5,
+            'cleanliness': 5.0
+          },
+          'comment': 'Emma a fait un travail exceptionnel pour mon mariage ! Coiffure et maquillage parfaits.',
+          'photos': []
+        }
+      ],
+      rating: 4.8,
     ),
     Professional(
       id: '3',
@@ -202,14 +232,27 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       },
       clientsCount: 600,
       specialties: ['Coupes homme', 'Barbe'],
-      experience: '5 ans d\'expérience',
-      education: 'Diplôme de barbier - École de Paris',
+      experience: '6 ans d\'expérience',
+      education: 'Formation barbier - École française de la barbe',
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
-      availability: 'Mardi - Samedi, 10h - 20h',
+      availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Pierre M.',
+          'date': '2024-12-22',
+          'ratings': {
+            'service': 5.0,
+            'punctuality': 4.5,
+            'price': 5.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Excellent barbier, très précis dans son travail. Je recommande !',
+          'photos': []
+        }
+      ],
+      rating: 4.7,
     ),
-
-    // Manucure
     Professional(
       id: '4',
       name: 'Marie K.',
@@ -239,6 +282,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Vendredi, 9h - 18h',
+      reviews: [
+        {
+          'userName': 'Julie D.',
+          'date': '2024-12-15',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon nail art ! Marie est très talentueuse.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '5',
@@ -269,6 +327,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 5.0,
+            'punctuality': 5.0,
+            'price': 4.5,
+            'cleanliness': 5.0
+          },
+          'comment': 'Nina a fait un travail incroyable pour mon nail art ! Je recommande.',
+          'photos': []
+        }
+      ],
+      rating: 4.7,
     ),
     Professional(
       id: '6',
@@ -300,6 +373,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 9h - 18h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon pédicure ! Léa est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '7',
@@ -330,6 +418,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Julie D.',
+          'date': '2024-12-15',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon soin du visage ! Sophie est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '8',
@@ -360,6 +463,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Dimanche, sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon maquillage ! Julie est très talentueuse.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '9',
@@ -390,6 +508,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 20h',
+      reviews: [
+        {
+          'userName': 'Pierre M.',
+          'date': '2024-12-22',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coupe et de ma barbe ! Marc est très professionnel.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '10',
@@ -420,9 +553,22 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Lundi - Dimanche, sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coiffure ! Anne est très talentueuse.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
-
-    // Soin
     Professional(
       id: '11',
       name: 'Laura M.',
@@ -452,6 +598,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 9h - 20h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon massage ! Laura est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '12',
@@ -482,6 +643,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais', 'Espagnol'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Julie D.',
+          'date': '2024-12-15',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon soin du visage ! Sophie est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '13',
@@ -512,6 +688,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Vendredi, 9h - 18h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon épilation ! Claire est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '14',
@@ -542,6 +733,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 8h - 20h',
+      reviews: [
+        {
+          'userName': 'Pierre M.',
+          'date': '2024-12-22',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon massage ! David est très professionnel.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '15',
@@ -572,9 +778,22 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 9h - 19h',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon massage ! Anne est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
-
-    // Massage
     Professional(
       id: '16',
       name: 'Julie D.',
@@ -605,6 +824,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Samedi, 9h - 19h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon maquillage ! Julie est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '17',
@@ -635,6 +869,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon maquillage ! Camille est très talentueuse.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '18',
@@ -665,9 +914,22 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon maquillage et de ma coiffure ! Marine est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
-
-    // Épilation
     Professional(
       id: '19',
       name: 'Nadia B.',
@@ -698,13 +960,28 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Arabe'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Julie D.',
+          'date': '2024-12-15',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon épilation ! Nadia est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '20',
       name: 'Léa P.',
       title: 'Esthéticienne',
       description: 'Spécialiste en épilation et soins esthétiques',
-      profileImage: 'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop',
+      profileImage: 'https://images.unsplash.com/photo-1507003211169-bcfd4ca60f91?w=200&h=200&fit=crop',
       portfolioImages: [
         'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881',
         'https://images.unsplash.com/photo-1598952946667-8af9b5b17a62',
@@ -729,6 +1006,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Vendredi, 9h - 18h',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon épilation ! Léa est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '21',
@@ -759,13 +1051,28 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais', 'Espagnol'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Lundi - Samedi, 9h - 20h',
+      reviews: [
+        {
+          'userName': 'Julie D.',
+          'date': '2024-12-15',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de mon épilation ! Sarah est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '22',
       name: 'Lucas M.',
       title: 'Coiffeur et barbier',
       description: 'Expert en coupe homme et taille de barbe',
-      profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop',
+      profileImage: 'https://images.unsplash.com/photo-1507003211169-bcfd4ca60f91?w=200&h=200&fit=crop',
       portfolioImages: [
         'https://images.unsplash.com/photo-1503951914875-452162b0f3f1',
         'https://images.unsplash.com/photo-1521119989659-a83eee488004',
@@ -790,6 +1097,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Pierre M.',
+          'date': '2024-12-22',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coupe et de ma barbe ! Lucas est très professionnel.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '23',
@@ -821,6 +1143,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Lundi - Samedi, 9h - 19h',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coloration ! Antoine est très professionnel.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '24',
@@ -852,6 +1189,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces', 'Virement'],
       availability: 'Sur rendez-vous',
+      reviews: [
+        {
+          'userName': 'Marie C.',
+          'date': '2024-12-20',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coiffure ! Marie est très professionnelle.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '25',
@@ -883,6 +1235,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Mardi - Samedi, 10h - 19h',
+      reviews: [
+        {
+          'userName': 'Pierre M.',
+          'date': '2024-12-22',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma coloration ! Pierre est très professionnel.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
     Professional(
       id: '26',
@@ -914,6 +1281,21 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
       languages: const ['Français', 'Anglais'],
       paymentMethods: const ['Carte bancaire', 'Espèces'],
       availability: 'Lundi - Vendredi, 9h - 18h',
+      reviews: [
+        {
+          'userName': 'Sophie L.',
+          'date': '2024-12-18',
+          'ratings': {
+            'service': 4.5,
+            'punctuality': 4.5,
+            'price': 4.0,
+            'cleanliness': 4.5
+          },
+          'comment': 'Très satisfaite de ma transformation ! Charlotte est très talentueuse.',
+          'photos': []
+        }
+      ],
+      rating: 4.4,
     ),
   ];
 
@@ -927,148 +1309,76 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
   final Map<String, Animation<double>> _shareScaleAnimations = {};
 
   void _showShareOptions(BuildContext context, String text, String userName) {
-    final RenderBox? box = context.findRenderObject() as RenderBox?;
-    final offset = box?.localToGlobal(Offset.zero) ?? Offset.zero;
-    final size = box?.size ?? Size.zero;
-
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-          ),
-          child: SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Partager',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.h),
-                  width: 40.w,
-                  height: 4.h,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(2.r),
-                  ),
+                _buildShareOption(
+                  icon: FontAwesomeIcons.whatsapp,
+                  label: 'WhatsApp',
+                  color: const Color(0xFF25D366),
+                  onTap: () async {
+                    final whatsappUrl = "whatsapp://send?text=$text";
+                    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+                      await launchUrl(Uri.parse(whatsappUrl));
+                    } else {
+                      Share.share(text);
+                    }
+                    Navigator.pop(context);
+                  },
                 ),
-                Padding(
-                  padding: EdgeInsets.all(16.r),
-                  child: Text(
-                    'Partager via',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                _buildShareOption(
+                  icon: FontAwesomeIcons.facebook,
+                  label: 'Facebook',
+                  color: const Color(0xFF1877F2),
+                  onTap: () {
+                    final facebookUrl = "https://www.facebook.com/sharer/sharer.php?u=${Uri.encodeComponent(text)}";
+                    launchUrl(Uri.parse(facebookUrl));
+                    Navigator.pop(context);
+                  },
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildShareOption(
-                        icon: FontAwesomeIcons.whatsapp,
-                        label: 'WhatsApp',
-                        color: Color(0xFF25D366),
-                        onTap: () async {
-                          final whatsappUrl = Uri.parse(
-                            'whatsapp://send?text=${Uri.encodeComponent(text)}'
-                          );
-                          if (await canLaunchUrl(whatsappUrl)) {
-                            await launchUrl(whatsappUrl);
-                          } else {
-                            Share.share(text);
-                          }
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SizedBox(width: 16.w),
-                      _buildShareOption(
-                        icon: FontAwesomeIcons.facebook,
-                        label: 'Facebook',
-                        color: Color(0xFF1877F2),
-                        onTap: () async {
-                          final facebookUrl = Uri.parse(
-                            'https://www.facebook.com/sharer/sharer.php?u=https://shayniss.com&quote=${Uri.encodeComponent(text)}'
-                          );
-                          if (await canLaunchUrl(facebookUrl)) {
-                            await launchUrl(facebookUrl);
-                          } else {
-                            Share.share(text);
-                          }
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SizedBox(width: 16.w),
-                      _buildShareOption(
-                        icon: FontAwesomeIcons.twitter,
-                        label: 'X (Twitter)',
-                        color: Colors.black,
-                        onTap: () async {
-                          final twitterUrl = Uri.parse(
-                            'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(text)}'
-                          );
-                          if (await canLaunchUrl(twitterUrl)) {
-                            await launchUrl(twitterUrl);
-                          } else {
-                            Share.share(text);
-                          }
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SizedBox(width: 16.w),
-                      _buildShareOption(
-                        icon: FontAwesomeIcons.instagram,
-                        label: 'Instagram',
-                        color: Color(0xFFE4405F),
-                        onTap: () async {
-                          Share.share(text);
-                          Navigator.pop(context);
-                        },
-                      ),
-                      SizedBox(width: 16.w),
-                      _buildShareOption(
-                        icon: Icons.copy,
-                        label: 'Copier',
-                        color: Colors.grey[700]!,
-                        onTap: () async {
-                          await Clipboard.setData(ClipboardData(text: text));
-                          Navigator.pop(context);
-                          if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Le texte a été copié dans le presse-papier'),
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                      SizedBox(width: 16.w),
-                      _buildShareOption(
-                        icon: Icons.more_horiz,
-                        label: 'Plus',
-                        color: Colors.grey[700]!,
-                        onTap: () async {
-                          Navigator.pop(context);
-                          await Share.share(text);
-                        },
-                      ),
-                    ],
-                  ),
+                _buildShareOption(
+                  icon: FontAwesomeIcons.twitter,
+                  label: 'Twitter',
+                  color: const Color(0xFF1DA1F2),
+                  onTap: () {
+                    final twitterUrl = "https://twitter.com/intent/tweet?text=${Uri.encodeComponent(text)}";
+                    launchUrl(Uri.parse(twitterUrl));
+                    Navigator.pop(context);
+                  },
                 ),
-                SizedBox(height: 16.h),
+                _buildShareOption(
+                  icon: Icons.share,
+                  label: 'Autre',
+                  color: Colors.grey,
+                  onTap: () {
+                    Share.share(text);
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
-          ),
-        );
-      },
+          ],
+        ),
+      ),
     );
   }
 
@@ -1080,32 +1390,31 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
-      child: Container(
-        width: 72.w,
-        padding: EdgeInsets.symmetric(vertical: 12.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: EdgeInsets.all(12.r),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: color, size: 24.sp),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 50.w,
+            height: 50.w,
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              shape: BoxShape.circle,
             ),
-            SizedBox(height: 8.h),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.grey[800],
-              ),
-              textAlign: TextAlign.center,
+            child: Icon(
+              icon,
+              color: color,
+              size: 25.w,
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: Colors.black87,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1117,168 +1426,166 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10.h),
-                width: 40.w,
-                height: 4.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
+      builder: (context) => Container(
+        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10.h),
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(2.r),
               ),
-              Padding(
-                padding: EdgeInsets.all(16.r),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Note moyenne',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.r),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Note moyenne',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
                         ),
-                        SizedBox(height: 4.h),
-                        Row(
-                          children: [
-                            Text(
-                              averageRating.toStringAsFixed(1),
-                              style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.amber[800],
-                              ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Row(
-                              children: List.generate(5, (index) {
-                                return Icon(
-                                  index < averageRating.floor()
-                                      ? Icons.star
-                                      : index < averageRating
-                                          ? Icons.star_half
-                                          : Icons.star_border,
-                                  color: Colors.amber,
-                                  size: 20.sp,
-                                );
-                              }),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          '${reviews.length} avis',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  itemCount: reviews.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    final review = reviews[index];
-                    return Container(
-                      margin: EdgeInsets.only(bottom: 16.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                      SizedBox(height: 4.h),
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 16.r,
-                                backgroundImage: NetworkImage(review.userImage),
-                              ),
-                              SizedBox(width: 8.w),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      review.userName,
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Row(
-                                      children: List.generate(5, (starIndex) {
-                                        return Icon(
-                                          starIndex < review.rating
-                                              ? Icons.star
-                                              : Icons.star_border,
-                                          color: Colors.amber,
-                                          size: 14.sp,
-                                        );
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                          Text(
+                            averageRating.toStringAsFixed(1),
+                            style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber[800],
+                            ),
                           ),
-                          if (review.comment.isNotEmpty) ...[
-                            SizedBox(height: 8.h),
-                            Text(
-                              review.comment,
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                          ],
-                          if (review.images != null && review.images!.isNotEmpty) ...[
-                            SizedBox(height: 8.h),
-                            SizedBox(
-                              height: 80.h,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: review.images!.length,
-                                itemBuilder: (context, imageIndex) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(right: 8.w),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      child: Image.network(
-                                        review.images![imageIndex],
-                                        width: 80.w,
-                                        height: 80.h,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                          SizedBox(width: 8.w),
+                          Row(
+                            children: List.generate(5, (index) {
+                              return Icon(
+                                index < averageRating.floor()
+                                    ? Icons.star
+                                    : index < averageRating
+                                        ? Icons.star_half
+                                        : Icons.star_border,
+                                color: Colors.amber,
+                                size: 20.sp,
+                              );
+                            }),
+                          ),
                         ],
                       ),
-                    );
-                  },
-                ),
+                      Text(
+                        '${reviews.length} avis',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
+            ),
+            Flexible(
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                itemCount: reviews.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final review = reviews[index];
+                  return Container(
+                    margin: EdgeInsets.only(bottom: 16.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 16.r,
+                              backgroundImage: NetworkImage(review.userImage),
+                            ),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    review.userName,
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: List.generate(5, (starIndex) {
+                                      return Icon(
+                                        starIndex < review.rating
+                                            ? Icons.star
+                                            : Icons.star_border,
+                                        color: Colors.amber,
+                                        size: 14.sp,
+                                      );
+                                    }),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (review.comment.isNotEmpty) ...[
+                          SizedBox(height: 8.h),
+                          Text(
+                            review.comment,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                        ],
+                        if (review.images != null && review.images!.isNotEmpty) ...[
+                          SizedBox(height: 8.h),
+                          SizedBox(
+                            height: 80.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: review.images!.length,
+                              itemBuilder: (context, imageIndex) {
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 8.w),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    child: Image.network(
+                                      review.images![imageIndex],
+                                      width: 80.w,
+                                      height: 80.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -1543,11 +1850,7 @@ class _ProHomeTabState extends State<ProHomeTab> with TickerProviderStateMixin {
               ),
               child: Row(
                 children: [
-                  Icon(
-                    Icons.add_photo_alternate,
-                    color: AppTheme.primaryColor,
-                    size: 24.sp,
-                  ),
+                  Icon(Icons.add_photo_alternate, size: 24.sp),
                   SizedBox(width: 12.w),
                   Text(
                     'Ajouter une publication',

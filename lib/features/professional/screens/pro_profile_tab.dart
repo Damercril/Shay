@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/theme/styles.dart';
+import '../../../core/providers/auth_provider.dart';
+import '../models/professional.dart';
 
 class ProProfileTab extends StatefulWidget {
   const ProProfileTab({super.key});
@@ -19,13 +23,16 @@ class _ProProfileTabState extends State<ProProfileTab> {
   String? _profileImage;
   
   // Images de démonstration depuis un CDN public
-  final String _defaultProfileImage = 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800';
+  final String _defaultProfileImage = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800';
   final List<String> _galleryImages = [
     'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=800',
-    'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=800',
-    'https://images.unsplash.com/photo-1560869713-da86bd4f31b7?w=800',
-    'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=800',
-    'https://images.unsplash.com/photo-1565647952915-9644fcd446a9?w=800',
+    'https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?w=800',
+    'https://images.unsplash.com/photo-1559599101-f09722fb4948?w=800',
+    'https://images.unsplash.com/photo-1565538420870-da08ff96a207?w=800',
+    'https://images.unsplash.com/photo-1579187707643-35646d22b596?w=800',
+    'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=800',
+    'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=800',
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800'
   ];
   
   // Informations de base
@@ -366,29 +373,55 @@ class _ProProfileTabState extends State<ProProfileTab> {
           ),
           SizedBox(height: 12.h),
           Container(
-            height: 200.h,
+            height: 300.h,
             child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
+                crossAxisCount: 3,
                 mainAxisSpacing: 8.h,
                 crossAxisSpacing: 8.w,
                 childAspectRatio: 1,
               ),
               itemCount: _galleryImages.length,
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 5,
-                        spreadRadius: 1,
+                return GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        backgroundColor: Colors.transparent,
+                        child: Stack(
+                          children: [
+                            Image.network(
+                              _galleryImages[index],
+                              fit: BoxFit.contain,
+                            ),
+                            Positioned(
+                              right: 8,
+                              top: 8,
+                              child: IconButton(
+                                icon: Icon(Icons.close, color: Colors.white),
+                                onPressed: () => Navigator.pop(context),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                    image: DecorationImage(
-                      image: NetworkImage(_galleryImages[index]),
-                      fit: BoxFit.cover,
+                    );
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        ),
+                      ],
+                      image: DecorationImage(
+                        image: NetworkImage(_galleryImages[index]),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 );
@@ -997,7 +1030,32 @@ class _ProProfileTabState extends State<ProProfileTab> {
           Center(
             child: Styles.gradientButton(
               text: 'Se déconnecter',
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text('Déconnexion'),
+                    content: Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Annuler'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          final authProvider = context.read<AuthProvider>();
+                          authProvider.logout();
+                          context.go('/login');
+                        },
+                        child: Text(
+                          'Se déconnecter',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
               gradient: Styles.warningGradient,
               icon: Icons.logout,
             ),
