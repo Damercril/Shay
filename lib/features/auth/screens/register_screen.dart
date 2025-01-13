@@ -1,403 +1,222 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import '../../../core/enums/user_type.dart';
-import '../../../core/providers/auth_provider.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/theme/app_text_styles.dart';
-import '../../../core/theme/app_components.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shayniss/core/theme/app_text_styles.dart';
+import 'package:shayniss/core/theme/app_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen>
-    with SingleTickerProviderStateMixin {
-  final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final List<TextEditingController> _pinControllers =
-      List.generate(4, (index) => TextEditingController());
-  final List<TextEditingController> _confirmPinControllers =
-      List.generate(4, (index) => TextEditingController());
-  final List<FocusNode> _pinFocusNodes = List.generate(4, (index) => FocusNode());
-  final List<FocusNode> _confirmPinFocusNodes =
-      List.generate(4, (index) => FocusNode());
+class _RegisterScreenState extends State<RegisterScreen> {
+  bool _isClient = true;
 
-  bool _isLoading = false;
-  UserType _selectedUserType = UserType.client;
+  void _handleNext() {
+    if (_isClient) {
+      context.go('/register/client');
+    } else {
+      context.go('/register/professional');
+    }
+  }
 
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    );
-    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
+  Widget _buildAccountTypeCard({
+    required String title,
+    required String description,
+    required IconData icon,
+    required bool isSelected,
+    required VoidCallback onTap,
+    required List<Color> gradientColors,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        margin: EdgeInsets.symmetric(vertical: 8.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: gradientColors,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: gradientColors.last.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isSelected 
+                  ? Colors.white.withOpacity(0.8)
+                  : Colors.transparent,
+              width: 2,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(12.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: Colors.white,
+                      size: 32.w,
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: AppTextStyles.heading3.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          description,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (isSelected)
+                    Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
-    _animationController.forward();
-
-    // Ajouter les listeners pour la navigation automatique du PIN
-    for (var i = 0; i < 4; i++) {
-      _pinControllers[i].addListener(() {
-        if (_pinControllers[i].text.length == 1 && i < 3) {
-          _pinFocusNodes[i + 1].requestFocus();
-        }
-      });
-      _confirmPinControllers[i].addListener(() {
-        if (_confirmPinControllers[i].text.length == 1 && i < 3) {
-          _confirmPinFocusNodes[i + 1].requestFocus();
-        }
-      });
-    }
   }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _phoneController.dispose();
-    for (var controller in [..._pinControllers, ..._confirmPinControllers]) {
-      controller.dispose();
-    }
-    for (var node in [..._pinFocusNodes, ..._confirmPinFocusNodes]) {
-      node.dispose();
-    }
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  String get _pin => _pinControllers.map((c) => c.text).join();
-  String get _confirmPin => _confirmPinControllers.map((c) => c.text).join();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Inscription',
-          style: AppTextStyles.heading3,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppTheme.primaryColor),
+          onPressed: () => context.go('/login'),
         ),
-        centerTitle: true,
+        title: const Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              AppTheme.primaryColor.withOpacity(0.05),
+              Colors.white,
+            ],
+          ),
+        ),
+        child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 24.h),
-                    Text(
-                      'Créez votre compte',
-                      style: AppTextStyles.heading2,
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      'Remplissez les informations ci-dessous',
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        color: AppTheme.subtitleColor,
-                      ),
-                    ),
-                    SizedBox(height: 32.h),
-                    _buildUserTypeSelector(),
-                    SizedBox(height: 24.h),
-                    AppComponents.textField(
-                      label: 'Nom complet',
-                      controller: _nameController,
-                      prefixIcon: const Icon(Icons.person_outline),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Veuillez entrer votre nom';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 16.h),
-                    AppComponents.textField(
-                      label: 'Numéro de téléphone',
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      prefixIcon: const Icon(Icons.phone_outlined),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Veuillez entrer votre numéro de téléphone';
-                        }
-                        if (value.length != 10) {
-                          return 'Le numéro doit contenir 10 chiffres';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 24.h),
-                    Text(
-                      'Créez votre code PIN (4 chiffres)',
-                      style: AppTextStyles.bodyLarge,
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(
-                        4,
-                        (index) => SizedBox(
-                          width: 50.w,
-                          child: TextFormField(
-                            controller: _pinControllers[index],
-                            focusNode: _pinFocusNodes[index],
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              counterText: '',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                  AppTheme.borderRadiusMedium,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12.h,
-                              ),
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(1),
-                            ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 24.h),
-                    Text(
-                      'Confirmez votre code PIN',
-                      style: AppTextStyles.bodyLarge,
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: List.generate(
-                        4,
-                        (index) => SizedBox(
-                          width: 50.w,
-                          child: TextFormField(
-                            controller: _confirmPinControllers[index],
-                            focusNode: _confirmPinFocusNodes[index],
-                            keyboardType: TextInputType.number,
-                            textAlign: TextAlign.center,
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              counterText: '',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(
-                                  AppTheme.borderRadiusMedium,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 12.h,
-                              ),
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(1),
-                            ],
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return '';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 32.h),
-                    SizedBox(
-                      width: double.infinity,
-                      child: AppComponents.primaryButton(
-                        text: 'S\'inscrire',
-                        onPressed: _handleRegister,
-                        isLoading: _isLoading,
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Déjà un compte ?',
-                          style: AppTextStyles.bodyMedium,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            'Se connecter',
-                            style: AppTextStyles.link,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 24.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16.h),
+                SizedBox(height: 24.h),
+                Text(
+                  'Bienvenue sur\nShayniss',
+                  style: AppTextStyles.heading1.copyWith(
+                    color: AppTheme.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                Text(
+                  'Choisissez votre type de compte',
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: Colors.grey[600],
+                  ),
+                ),
+                SizedBox(height: 32.h),
+                _buildAccountTypeCard(
+                  title: 'Client',
+                  description: 'Je cherche des services de beauté',
+                  icon: Icons.person_outline,
+                  isSelected: _isClient,
+                  onTap: () => setState(() => _isClient = true),
+                  gradientColors: [
+                    Color(0xFF6B8EFF),
+                    Color(0xFF3461FF),
                   ],
                 ),
-              ),
+                _buildAccountTypeCard(
+                  title: 'Professionnel',
+                  description: 'Je propose des services de beauté',
+                  icon: Icons.business_center_outlined,
+                  isSelected: !_isClient,
+                  onTap: () => setState(() => _isClient = false),
+                  gradientColors: [
+                    Color(0xFFFF6B8E),
+                    Color(0xFFFF3461),
+                  ],
+                ),
+                const Spacer(),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(bottom: 24.h),
+                  child: ElevatedButton(
+                    onPressed: _handleNext,
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                      backgroundColor: AppTheme.primaryColor,
+                    ),
+                    child: Text(
+                      'Continuer',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Widget _buildUserTypeSelector() {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppTheme.surfaceColor,
-        borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-        border: Border.all(color: AppTheme.dividerColor),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: _buildUserTypeButton(
-              title: 'Client',
-              type: UserType.client,
-              icon: Icons.person_outline,
-            ),
-          ),
-          Container(
-            width: 1,
-            height: 40.h,
-            color: AppTheme.dividerColor,
-          ),
-          Expanded(
-            child: _buildUserTypeButton(
-              title: 'Professionnel',
-              type: UserType.professional,
-              icon: Icons.business_center_outlined,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildUserTypeButton({
-    required String title,
-    required UserType type,
-    required IconData icon,
-  }) {
-    final isSelected = _selectedUserType == type;
-    return InkWell(
-      onTap: () {
-        setState(() {
-          _selectedUserType = type;
-        });
-      },
-      borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.h),
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor.withOpacity(0.1) : null,
-          borderRadius: BorderRadius.circular(AppTheme.borderRadiusMedium),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isSelected ? AppTheme.primaryColor : AppTheme.subtitleColor,
-            ),
-            SizedBox(width: 8.w),
-            Text(
-              title,
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: isSelected ? AppTheme.primaryColor : AppTheme.subtitleColor,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _handleRegister() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    if (_pin.length != 4) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Veuillez entrer un code PIN à 4 chiffres'),
-          backgroundColor: AppTheme.errorColor,
-        ),
-      );
-      return;
-    }
-
-    if (_pin != _confirmPin) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Les codes PIN ne correspondent pas'),
-          backgroundColor: AppTheme.errorColor,
-        ),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await context.read<AuthProvider>().register(
-            _phoneController.text,
-            _pin,
-            userType: _selectedUserType,
-          );
-
-      if (!mounted) return;
-
-      Navigator.pushReplacementNamed(context, '/home');
-    } catch (e) {
-      if (!mounted) return;
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur d\'inscription: ${e.toString()}'),
-          backgroundColor: AppTheme.errorColor,
-        ),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
   }
 }

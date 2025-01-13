@@ -177,82 +177,40 @@ class AppTheme {
   );
 
   // Thème clair
-  static ThemeData get lightTheme => ThemeData(
-    useMaterial3: true,
+  static final ThemeData lightTheme = ThemeData(
     primaryColor: primaryColor,
     scaffoldBackgroundColor: scaffoldBackgroundColor,
     cardColor: cardColor,
     dividerColor: dividerColor,
-    colorScheme: ColorScheme.light(
+    textTheme: GoogleFonts.poppinsTextTheme().copyWith(
+      displayLarge: const TextStyle(color: textColor),
+      displayMedium: const TextStyle(color: textColor),
+      displaySmall: const TextStyle(color: textColor),
+      headlineLarge: const TextStyle(color: textColor),
+      headlineMedium: const TextStyle(color: textColor),
+      headlineSmall: const TextStyle(color: textColor),
+      titleLarge: const TextStyle(color: textColor),
+      titleMedium: const TextStyle(color: textColor),
+      titleSmall: const TextStyle(color: textColor),
+      bodyLarge: const TextStyle(color: textColor),
+      bodyMedium: const TextStyle(color: textColor),
+      bodySmall: const TextStyle(color: subtitleColor),
+      labelLarge: const TextStyle(color: textColor),
+      labelMedium: const TextStyle(color: textColor),
+      labelSmall: const TextStyle(color: textColor),
+    ),
+    colorScheme: const ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
       surface: surfaceColor,
-      background: scaffoldBackgroundColor,
-      error: errorColor,
+      background: backgroundColor,
+      error: Colors.red,
       onPrimary: Colors.white,
-      onSecondary: textColor,
+      onSecondary: Colors.black,
       onSurface: textColor,
       onBackground: textColor,
       onError: Colors.white,
-    ),
-    appBarTheme: AppBarTheme(
-      backgroundColor: scaffoldBackgroundColor,
-      foregroundColor: textColor,
-      elevation: 0,
-      iconTheme: IconThemeData(color: textColor),
-      titleTextStyle: TextStyle(
-        color: textColor,
-        fontSize: 20,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-    iconTheme: IconThemeData(
-      color: textColor,
-    ),
-    textTheme: GoogleFonts.poppinsTextTheme().copyWith(
-      displayLarge: TextStyle(color: textColor, fontSize: 32, fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(color: textColor, fontSize: 28, fontWeight: FontWeight.bold),
-      displaySmall: TextStyle(color: textColor, fontSize: 24, fontWeight: FontWeight.bold),
-      headlineMedium: TextStyle(color: textColor, fontSize: 20, fontWeight: FontWeight.bold),
-      titleLarge: TextStyle(color: textColor, fontSize: 18, fontWeight: FontWeight.w600),
-      bodyLarge: bodyLarge,
-      bodyMedium: bodyMedium,
-      bodySmall: bodySmall,
-      labelLarge: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
-    ),
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: primaryButton,
-    ),
-    outlinedButtonTheme: OutlinedButtonThemeData(
-      style: outlinedButton,
-    ),
-    inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: surfaceColor,
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadiusMedium),
-        borderSide: const BorderSide(color: Colors.grey),
-      ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadiusMedium),
-        borderSide: const BorderSide(color: Colors.grey),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadiusMedium),
-        borderSide: const BorderSide(color: primaryColor),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadiusMedium),
-        borderSide: const BorderSide(color: errorColor),
-      ),
-      contentPadding: const EdgeInsets.all(16),
-    ),
-    cardTheme: CardTheme(
-      color: surfaceColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadiusMedium),
-      ),
+      brightness: Brightness.light,
     ),
   );
 }

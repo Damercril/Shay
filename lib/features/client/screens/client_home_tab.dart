@@ -479,54 +479,80 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
           ),
         );
       },
-      child: Container(
-        width: 160.w,
-        margin: EdgeInsets.symmetric(horizontal: 8.w),
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12.r),
+            image: DecorationImage(
+              image: NetworkImage(serviceType.image),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.3),
+                BlendMode.darken,
+              ),
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  image: DecorationImage(
-                    image: NetworkImage(serviceType.image),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                      Colors.black.withOpacity(0.3),
-                      BlendMode.darken,
-                    ),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.6),
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(12.r),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(
+                      serviceType.icon,
+                      color: Colors.white,
+                      size: 32.sp,
+                    ),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          serviceType.name,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          '${serviceType.services.length} services',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: Colors.white.withOpacity(0.8),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                child: Center(
-                  child: Text(
-                    serviceType.name,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
               ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              '${serviceType.services.length} services',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -722,16 +748,34 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
   }
 
   Widget _buildServicesSection() {
-    return SliverToBoxAdapter(
-      child: Container(
-        height: 200.h,
-        margin: EdgeInsets.symmetric(vertical: 16.h),
-        child: ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
-          scrollDirection: Axis.horizontal,
-          itemCount: services.length,
-          itemBuilder: (context, index) => _buildServiceBubble(services[index]),
-        ),
+    // Calculer combien de paires de services nous avons
+    final int pairCount = (services.length / 2).ceil();
+    
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, pairIndex) {
+          // Calculer les indices des deux services pour cette paire
+          final int firstIndex = pairIndex * 2;
+          final int secondIndex = firstIndex + 1;
+          
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildServiceBubble(services[firstIndex]),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: secondIndex < services.length
+                      ? _buildServiceBubble(services[secondIndex])
+                      : Container(), // Espace vide si pas de second service
+                ),
+              ],
+            ),
+          );
+        },
+        childCount: pairCount,
       ),
     );
   }

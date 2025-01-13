@@ -72,12 +72,14 @@ class AppComponents {
     Widget? prefixIcon,
     Widget? suffixIcon,
     List<TextInputFormatter>? inputFormatters,
+    int? maxLines = 1,
   }) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
       validator: validator,
+      maxLines: maxLines,
       style: AppTextStyles.bodyMedium,
       decoration: InputDecoration(
         labelText: label,
