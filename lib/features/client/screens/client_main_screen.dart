@@ -77,7 +77,9 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = _currentIndex == index;
     return InkWell(
-      onTap: () => setState(() => _currentIndex = index),
+      onTap: () {
+        setState(() => _currentIndex = index);
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -86,11 +88,13 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
             color: isSelected ? AppTheme.primaryColor : Colors.grey,
             size: 24.w,
           ),
+          SizedBox(height: 4.h),
           Text(
             label,
             style: TextStyle(
               color: isSelected ? AppTheme.primaryColor : Colors.grey,
               fontSize: 12.sp,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],

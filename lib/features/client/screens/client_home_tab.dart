@@ -94,63 +94,43 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
       ],
     ),
     ServiceType(
-      name: 'Yoga',
-      icon: FontAwesomeIcons.om,
-      colors: [Color(0xFF84FAB0), Color(0xFF8FD3F4)],
-      image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-4.0.3',
+      name: 'Ongle',
+      icon: FontAwesomeIcons.handSparkles,
+      colors: [Color(0xFFFFB7B2), Color(0xFFFFE4E1)],
+      image: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3',
       services: [
-        'Yoga débutant',
-        'Yoga avancé',
-        'Méditation guidée',
-        'Yoga prénatal',
-        'Yoga thérapeutique',
-        'Yoga aérien',
-        'Yoga Vinyasa',
-        'Yoga Ashtanga',
-        'Yoga Kundalini',
-        'Yoga Yin',
-        'Yoga pour enfants',
-        'Retraites yoga',
+        'Manucure classique',
+        'Manucure semi-permanent',
+        'Pose gel',
+        'Pose capsules',
+        'Nail art',
+        'French manucure',
+        'Pédicure complète',
+        'Vernis semi-permanent pieds',
+        'Dépose gel',
+        'Remplissage gel',
+        'Réparation ongle',
+        'Soin des mains et pieds',
       ],
     ),
     ServiceType(
-      name: 'Sport',
-      icon: FontAwesomeIcons.dumbbell,
-      colors: [Color(0xFF5EE7DF), Color(0xFFB490CA)],
-      image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?ixlib=rb-4.0.3',
+      name: 'Soin',
+      icon: FontAwesomeIcons.heart,
+      colors: [Color(0xFFFBC8D4), Color(0xFF9795F0)],
+      image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3',
       services: [
-        'Coach personnel',
-        'Fitness',
-        'Crossfit',
-        'Musculation',
-        'Cardio training',
-        'Stretching',
-        'Zumba',
-        'Boxe',
-        'Pilates',
-        'TRX',
-        'HIIT',
-        'Circuit training',
-      ],
-    ),
-    ServiceType(
-      name: 'Nutrition',
-      icon: FontAwesomeIcons.carrot,
-      colors: [Color(0xFF43E97B), Color(0xFF38F9D7)],
-      image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3',
-      services: [
-        'Bilan nutritionnel',
-        'Plan alimentaire',
-        'Coaching minceur',
-        'Nutrition sportive',
-        'Rééquilibrage alimentaire',
-        'Suivi personnalisé',
-        'Consultation diététique',
-        'Analyse composition corporelle',
-        'Nutrition végétarienne',
-        'Nutrition végane',
-        'Nutrition sans gluten',
-        'Nutrition anti-inflammatoire',
+        'Soin hydratant',
+        'Soin anti-âge',
+        'Soin purifiant',
+        'Soin éclaircissant',
+        'Masque visage',
+        'Peeling',
+        'Soin contour des yeux',
+        'Soin corps',
+        'Enveloppement',
+        'Soin minceur',
+        'Drainage',
+        'Soin relaxant',
       ],
     ),
   ];
@@ -198,12 +178,12 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
       },
       {
         'image': 'https://images.pexels.com/photos/3822864/pexels-photo-3822864.jpeg',
-        'title': 'Yoga',
+        'title': 'Ongle',
         'distance': '4.1 km',
       },
       {
         'image': 'https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg',
-        'title': 'Sport',
+        'title': 'Soin',
         'distance': '0.8 km',
       },
     ];
@@ -233,7 +213,7 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
     setState(() {
       _isLoadingMore = true;
     });
-    
+
     try {
       await Future.delayed(const Duration(seconds: 1));
       if (!mounted) return;
@@ -291,7 +271,7 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
 
   void _sharePost(Professional professional) {
     final String shareText = "Découvrez ${professional.name}, ${professional.title.toLowerCase()} sur Shayniss!\n\n${professional.description}\n\nPrenez rendez-vous sur l'application Shayniss 💅✨";
-    
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -469,118 +449,6 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _buildServiceBubble(ServiceType serviceType) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ServiceProvidersScreen(service: serviceType),
-          ),
-        );
-      },
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12.r),
-            image: DecorationImage(
-              image: NetworkImage(serviceType.image),
-              fit: BoxFit.cover,
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.3),
-                BlendMode.darken,
-              ),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 8,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.6),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(12.r),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(
-                      serviceType.icon,
-                      color: Colors.white,
-                      size: 32.sp,
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          serviceType.name,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          '${serviceType.services.length} services',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: Colors.white.withOpacity(0.8),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShareButton(Professional professional) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8.w),
-      child: IconButton(
-        onPressed: () {
-          _sharePost(professional);
-        },
-        icon: Icon(
-          FontAwesomeIcons.shareNodes,
-          color: AppTheme.primaryColor,
-          size: 24.w,
-        ),
-        padding: EdgeInsets.all(8.w),
-        constraints: BoxConstraints(
-          minWidth: 40.w,
-          minHeight: 40.w,
-        ),
-        splashRadius: 24.w,
-        splashColor: _withOpacity(AppTheme.primaryColor, 0.2),
-      ),
-    );
-  }
-
   Widget _buildReviewSection(Professional professional) {
     return GestureDetector(
       onTap: () {
@@ -747,35 +615,25 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
     );
   }
 
-  Widget _buildServicesSection() {
-    // Calculer combien de paires de services nous avons
-    final int pairCount = (services.length / 2).ceil();
-    
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, pairIndex) {
-          // Calculer les indices des deux services pour cette paire
-          final int firstIndex = pairIndex * 2;
-          final int secondIndex = firstIndex + 1;
-          
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildServiceBubble(services[firstIndex]),
-                ),
-                SizedBox(width: 16.w),
-                Expanded(
-                  child: secondIndex < services.length
-                      ? _buildServiceBubble(services[secondIndex])
-                      : Container(), // Espace vide si pas de second service
-                ),
-              ],
-            ),
-          );
+  Widget _buildShareButton(Professional professional) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8.w),
+      child: IconButton(
+        onPressed: () {
+          _sharePost(professional);
         },
-        childCount: pairCount,
+        icon: Icon(
+          FontAwesomeIcons.shareNodes,
+          color: AppTheme.primaryColor,
+          size: 24.w,
+        ),
+        padding: EdgeInsets.all(8.w),
+        constraints: BoxConstraints(
+          minWidth: 40.w,
+          minHeight: 40.w,
+        ),
+        splashRadius: 24.w,
+        splashColor: _withOpacity(AppTheme.primaryColor, 0.2),
       ),
     );
   }
@@ -784,68 +642,166 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Shayniss',
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.message_outlined),
-                onPressed: _chatService == null
-                    ? null
-                    : () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ChatListScreen(),
-                          ),
-                        );
-                        _updateUnreadCount();
-                      },
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(28.h),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          elevation: 0,
+          toolbarHeight: 28.h,
+          backgroundColor: Colors.white,
+          title: Padding(
+            padding: EdgeInsets.only(left: 16.w),
+            child: Text(
+              'Shayniss',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w500,
               ),
-              if (_unreadMessagesCount > 0)
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    constraints: BoxConstraints(
-                      minWidth: 18.w,
-                      minHeight: 18.w,
-                    ),
-                    child: Text(
-                      _unreadMessagesCount.toString(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-            ],
+            ),
           ),
-        ],
+          titleSpacing: 0,
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(
+                      minWidth: 24.w,
+                      minHeight: 24.h,
+                    ),
+                    icon: Icon(
+                      Icons.message_outlined,
+                      size: 24.w,
+                    ),
+                    onPressed: _chatService == null
+                        ? null
+                        : () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ChatListScreen(),
+                              ),
+                            );
+                            _updateUnreadCount();
+                          },
+                  ),
+                  if (_unreadMessagesCount > 0)
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6.r, vertical: 2.r),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 18.w,
+                          minHeight: 18.w,
+                        ),
+                        child: Text(
+                          _unreadMessagesCount.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: CustomScrollView(
           controller: _scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
           slivers: <Widget>[
-            _buildServicesSection(),
+            SliverToBoxAdapter(
+              child: Container(
+                height: 110.h,
+                margin: EdgeInsets.zero,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  itemCount: services.length,
+                  itemBuilder: (context, index) {
+                    final service = services[index];
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 6.w),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ServiceProvidersScreen(
+                                service: service,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 70.w,
+                              height: 70.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: service.colors,
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3.w,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Container(
+                                margin: EdgeInsets.all(2.w),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: NetworkImage(service.image),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Text(
+                              service.name,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black87,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               sliver: SliverList(
@@ -867,7 +823,7 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           ListTile(
                             onTap: () {
                               Navigator.push(
@@ -884,7 +840,7 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                               backgroundImage: NetworkImage(professional.profileImage),
                             ),
                             title: Row(
-                              children: [
+                              children: <Widget>[
                                 Expanded(
                                   child: Text(
                                     professional.name,
@@ -946,9 +902,9 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                             padding: EdgeInsets.all(16.w),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: <Widget>[
                                 Row(
-                                  children: [
+                                  children: <Widget>[
                                     IconButton(
                                       icon: Icon(
                                         _likedPosts[professional.id] ?? false
@@ -972,7 +928,7 @@ class _ClientHomeTabState extends State<ClientHomeTab> with AutomaticKeepAliveCl
                                   ],
                                 ),
                                 Row(
-                                  children: [
+                                  children: <Widget>[
                                     _buildShareButton(professional),
                                     SizedBox(width: 16.w),
                                     ElevatedButton(
